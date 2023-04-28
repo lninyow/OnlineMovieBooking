@@ -6,7 +6,7 @@
         JFrame newFrame = new JFrame("Test");
         newFrame.setSize(1920,1080);
 
-        JLabel label = new JLabel("Hello World!");
+        JLabel label = new JLabel("Hello World! Nabuang naning OOP");
         label.setBounds(50, 50, 100, 30);
         newFrame.add(label);
 
