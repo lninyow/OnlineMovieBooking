@@ -10,6 +10,9 @@ public class WelcomePage extends JFrame {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JLabel imageLabel;
+    private JPanel loginLabel;
+    private JLabel loginLabelText;
+
 
     public WelcomePage() {
         super("Login Page");
@@ -25,8 +28,20 @@ public class WelcomePage extends JFrame {
         GridBagConstraints welcomeConstraints = new GridBagConstraints();
         welcomeConstraints.gridx = 0;
         welcomeConstraints.gridy = 0;
-        welcomeConstraints.insets = new Insets(0, 100, 50, 0);
+        welcomeConstraints.insets = new Insets(0, 100, 150, 0);
         loginPanel.add(welcomeLabel, welcomeConstraints);
+
+        loginLabel = new JPanel();
+        loginLabel.setLayout(new FlowLayout());
+        loginLabelText = new JLabel("Log in");
+        loginLabelText.setFont(new Font("SansSerif", Font.BOLD, 40));
+        GridBagConstraints loginConstraints = new GridBagConstraints();
+        loginConstraints.gridx = 0;
+        loginConstraints.gridy = 0;
+        loginConstraints.insets = new Insets(100, 0, 50, 0);
+        loginLabel.add(loginLabelText);
+        loginPanel.add(loginLabel, loginConstraints);
+
 
         // Create the username label and field
         usernameLabel = new JLabel("Username:");
