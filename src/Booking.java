@@ -76,5 +76,47 @@ public class Booking {
         this.paymentStatus = paymentStatus;
     }
 
+    public Booking createBooking(int user_id, int showtime_id, int num_tickets, int total_price) {
+        // check if required fields are not null or empty
+        if (user_id == 0 || showtime_id == 0 || num_tickets == 0 || total_price == 0) {
+            throw new IllegalArgumentException("Please provide all the required fields.");
+        }
+
+        // check if enough seats are available
+        int availableSeats = getAvailableSeats(showtime_id);
+        if (num_tickets > availableSeats) {
+            throw new IllegalArgumentException("Sorry, there are not enough available seats for your booking.");
+        }
+
+        // insert a new row into the booking table
+        try {
+            String sql = "INSERT INTO booking (user_id, showtime_id, num_tickets, total_price, payment_status) VALUES (?, ?, ?, ?, 0)";
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, user_id);
+            pstmt.setInt(2, showtime_id);
+            pstmt.setInt(3, num_tickets);
+            pstmt.setInt(4, total_price);
+            pstmt.executeUpdate();
+
+            // get the generated booking_id and booking_time
+            ResultSet rs = pstmt.getGeneratedKeys();
+            int booking_id = 0;
+            Date booking_time = null;
+            if (rs.next()) {
+                booking_id = rs.getInt(1);
+                booking_time = new Date(rs.getTimestamp(2).getTime());
+            }
+
+            // create a new Booking object with the generated values
+            Booking booking = new Booking(booking_id, user_id, showtime_id, num_tickets, booking_time, total_price, false);
+
+            return booking;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
 }
