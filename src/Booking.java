@@ -8,6 +8,12 @@ public class Booking {
     private Timestamp booking_time;
     private int totalPrice;
     private boolean paymentStatus;
+    private MovieDatabaseManager movieDbManager;
+
+
+    public Booking(MovieDatabaseManager movieDbManager) {
+        this.movieDbManager = movieDbManager;
+    }
 
 
     public Booking(int bookingId, int userId, int showtimeId, int num_tickets, Timestamp booking_time, int totalPrice, boolean paymentStatus) {
@@ -18,6 +24,9 @@ public class Booking {
         this.booking_time = booking_time;
         this.totalPrice = totalPrice;
         this.paymentStatus = paymentStatus;
+    }
+
+    public Booking(int bookingId, int userId, int showtimeId, int numTickets, Date bookingTime, int totalPrice, boolean paymentStatus) {
     }
 
     public int getBookingId() {
@@ -81,7 +90,6 @@ public class Booking {
         if (user_id == 0 || showtime_id == 0 || num_tickets == 0 || total_price == 0) {
             throw new IllegalArgumentException("Please provide all the required fields.");
         }
-
         // check if enough seats are available
         int availableSeats = getAvailableSeats(showtime_id);
         if (num_tickets > availableSeats) {
@@ -91,6 +99,7 @@ public class Booking {
         // insert a new row into the booking table
         try {
             String sql = "INSERT INTO booking (user_id, showtime_id, num_tickets, total_price, payment_status) VALUES (?, ?, ?, ?, 0)";
+            Connection conn = movieDbManager.getDatabaseConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, user_id);
             pstmt.setInt(2, showtime_id);
@@ -116,6 +125,7 @@ public class Booking {
             return null;
         }
     }
+
 
 
 
