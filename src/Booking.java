@@ -91,10 +91,12 @@ public class Booking {
             throw new IllegalArgumentException("Please provide all the required fields.");
         }
         // check if enough seats are available
-        int availableSeats = getAvailableSeats(showtime_id);
-        if (num_tickets > availableSeats) {
-            throw new IllegalArgumentException("Sorry, there are not enough available seats for your booking.");
-        }
+//        int availableSeats = getAvailableSeats(showtime_id);
+//        if (num_tickets > availableSeats) {
+//            throw new IllegalArgumentException("Sorry, there are not enough available seats for your booking.");
+//        }
+
+        // dont delete code above tyy ^^^^
 
         // insert a new row into the booking table
         try {

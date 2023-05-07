@@ -1,6 +1,6 @@
 import java.sql.SQLException;
 import java.sql.*;
-public class RegisterPage {
+public class RegisterLoginPage {
     private int userId;
     private String firstName,lastName,userName,password;
     private int contact_no;
@@ -16,7 +16,7 @@ public class RegisterPage {
         this.dbMovieManager = dbMovieManager;
     }
 
-    public RegisterPage(int userId, String firstName, String lastName, String userName, String password, int contact_no, String emailAddress) {
+    public RegisterLoginPage(int userId, String firstName, String lastName, String userName, String password, int contact_no, String emailAddress) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -101,6 +101,20 @@ public class RegisterPage {
         return true;
     }
 
+    public boolean loginUser(String username, String password) throws SQLException {
+        // Check if the username exists
+        Connection conn = dbMovieManager.getDatabaseConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT password FROM user WHERE username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        if (!rs.next()) {
+            // The username does not exist, so return false
+            return false;
+        }
 
+        // Check if the entered password matches the retrieved password
+        String retrievedPassword = rs.getString("password");
+        return retrievedPassword.equals(password);
+    }
 
 }
