@@ -5,8 +5,8 @@
     public static void main(String[] args) {
 
         MovieDatabaseManager onlineMovieBooking = new MovieDatabaseManager("jdbc:mysql:D://oop2 for finals database//onlineMovieBooking.db", "username", "password");
-        new WelcomePage();
-        HomePage home = new HomePage();
-        home.setVisible(true);
+         new WelcomePage();
+
+
     }
 }

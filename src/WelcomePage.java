@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class WelcomePage extends JFrame {
@@ -103,8 +105,17 @@ public class WelcomePage extends JFrame {
             add(loginPanel, BorderLayout.WEST);
             add(imageLabel, BorderLayout.EAST);
 
+            loginButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    HomePage home = new HomePage();
+                    home.setVisible(true);
+                    setVisible(false);
+                }
+            });
+
             // Set frame properties
-            setSize(1920, 1080);
+            setSize(1200, 705);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(true);
         }
