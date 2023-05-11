@@ -92,9 +92,17 @@ public class RegisterPage extends JFrame {
                 try {
                     boolean success = registerUser(username, password, firstName, lastName, emailAddress);
                     if (success) {
+                        usernameField.setText("");
+                        passwordField.setText("");
+                        firstNameField.setText("");
+                        lastNameField.setText("");
+                        emailField.setText("");
+                        JOptionPane.showMessageDialog(null, "Registration successful!");
                         // User registration successful
                         // Show a success message or navigate to the next page
                     } else {
+                        JOptionPane.showMessageDialog(null, "Username is taken. Registration failed. Please try again.");
+
                         // User registration failed because the username already exists
                         // Show an error message
                     }
