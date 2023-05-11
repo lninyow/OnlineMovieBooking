@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class WelcomePage extends JFrame {
@@ -13,6 +15,10 @@ public class WelcomePage extends JFrame {
     private JPanel loginLabel;
     private JLabel loginLabelText;
 
+    private JPanel noAccountPanel;
+    private JLabel noAccountLabel;
+    private JLabel RegisterHereLabel;
+
 
     public WelcomePage() {
         super("Login Page");
@@ -20,6 +26,7 @@ public class WelcomePage extends JFrame {
         // Create the login panel
         loginPanel = new JPanel();
         loginPanel.setPreferredSize(new Dimension(800, 900));
+
         loginPanel.setLayout(new GridBagLayout());
 
         // Create the welcome label
@@ -41,6 +48,17 @@ public class WelcomePage extends JFrame {
         loginConstraints.insets = new Insets(100, 0, 50, 0);
         loginLabel.add(loginLabelText);
         loginPanel.add(loginLabel, loginConstraints);
+
+
+//        noAccountPanel = new JPanel();
+//        noAccountPanel.setLayout(new FlowLayout());
+//        noAccountLabel = new JLabel("Dont have an account?");
+//        noAccountLabel.setFont(new Font("SansSerif",Font.PLAIN,25));
+//        GridBagConstraints c = new GridBagConstraints();
+//        c.gridx = 0;
+//        c.gridy = 0;
+//        noAccountPanel.add(noAccountLabel);
+//        loginPanel.add(noAccountPanel,c);
 
 
         // Create the username label and field
@@ -103,12 +121,23 @@ public class WelcomePage extends JFrame {
             add(loginPanel, BorderLayout.WEST);
             add(imageLabel, BorderLayout.EAST);
 
+            loginButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    HomePageTest home = new HomePageTest();
+                    home.setVisible(true);
+                    setVisible(false);
+                }
+            });
+
             // Set frame properties
-            setSize(1920, 1080);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(1200, 705);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(true);
         }
     }
+
 
 
 
