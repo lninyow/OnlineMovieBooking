@@ -115,7 +115,7 @@ public class HomePageTest extends JFrame {
 
         //Fourth Row
         try {
-            BufferedImage image = ImageIO.read(new File("C://Users//Liden//Downloads//ticketgwapo.png"));
+            BufferedImage image = ImageIO.read(new File("C://Users//Liden//Downloads//bookticket.png"));
             JLabel label = new JLabel(new ImageIcon(image));
             c.gridx = 0;
             c.gridy = 4;
