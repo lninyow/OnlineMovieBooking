@@ -1,8 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.*;
 
 public class RegisterPage extends JFrame {
-    public RegisterPage() {
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
+
+    public RegisterPage() throws SQLException {
         // Set up the registration page
         setTitle("Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,6 +79,33 @@ public class RegisterPage extends JFrame {
         Color buttonColor = new Color(65, 75, 178);
         registerButton.setBackground(buttonColor);
         registerButton.setForeground(Color.WHITE);
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+                String firstName = firstNameField.getText();
+                String lastName = lastNameField.getText();
+                String emailAddress = emailField.getText();
+                try {
+                    boolean success = registerUser(username, password, firstName, lastName, emailAddress);
+                    if (success) {
+                        // User registration successful
+                        // Show a success message or navigate to the next page
+                    } else {
+                        // User registration failed because the username already exists
+                        // Show an error message
+                    }
+                } catch (SQLException ex) {
+                    // Handle the SQLException appropriately
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+
         JLabel loginLabel = new JLabel("Already have an account? ");
         JButton loginButton = new JButton("Log in now");
         loginButton.setForeground(buttonColor);
@@ -89,6 +125,30 @@ public class RegisterPage extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(loginPanel, BorderLayout.SOUTH);
+    }
+
+
+
+    public boolean registerUser(String username, String password, String firstName,String  lastName, String email) throws SQLException {
+        // Check if the username already exists
+        Connection conn = dbMovieManager.getDatabaseConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT username FROM user WHERE username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            // The username already exists, so return false
+            return false; // if statement in Web page, where it pops up " Username already taken" if it returns false
+        }
+
+        // Insert the new user's information into the user table
+        stmt = conn.prepareStatement("INSERT INTO user (first_name, last_name, username, password,email_address) VALUES (?, ?, ?, ?, ?)");
+        stmt.setString(1, firstName);
+        stmt.setString(2, lastName);
+        stmt.setString(3, username);
+        stmt.setString(4, password);
+        stmt.setString(5, email);
+        stmt.executeUpdate();
+        return true;
     }
 
 }
