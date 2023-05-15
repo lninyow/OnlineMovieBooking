@@ -43,7 +43,6 @@ public class HomePageTest extends JFrame {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 5, 10, 5);
-        c.anchor = GridBagConstraints.NORTH;
 
         // First row
         jLabel1 = new JLabel("Search for a movie: ");
