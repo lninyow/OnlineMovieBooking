@@ -9,10 +9,12 @@ import java.sql.SQLException;
 import java.sql.*;
 
 public class RegisterPage extends JFrame {
+    boolean valid = true;
     MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
 
     public RegisterPage() throws SQLException {
         // Set up the registration page
+
         setTitle("Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 705);
@@ -79,6 +81,23 @@ public class RegisterPage extends JFrame {
         Color buttonColor = new Color(65, 75, 178);
         registerButton.setBackground(buttonColor);
         registerButton.setForeground(Color.WHITE);
+
+        if (usernameField.getText().isEmpty()) {
+            valid = false;
+        }
+        if (new String(passwordField.getPassword()).isEmpty()) {
+            valid = false;
+        }
+        if (firstNameField.getText().isEmpty()) {
+            valid = false;
+        }
+        if (lastNameField.getText().isEmpty()) {
+            valid = false;
+        }
+        if (emailField.getText().isEmpty()) {
+            valid = false;
+        }
+
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,26 +108,30 @@ public class RegisterPage extends JFrame {
                 String firstName = firstNameField.getText();
                 String lastName = lastNameField.getText();
                 String emailAddress = emailField.getText();
-                try {
-                    boolean success = registerUser(username, password, firstName, lastName, emailAddress);
-                    if (success) {
-                        usernameField.setText("");
-                        passwordField.setText("");
-                        firstNameField.setText("");
-                        lastNameField.setText("");
-                        emailField.setText("");
-                        JOptionPane.showMessageDialog(null, "Registration successful!");
-                        // User registration successful
-                        // Show a success message or navigate to the next page
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Username is taken. Registration failed. Please try again.");
+                if (valid) {
+                    try {
+                        boolean success = registerUser(username, password, firstName, lastName, emailAddress);
+                        if (success) {
+                            usernameField.setText("");
+                            passwordField.setText("");
+                            firstNameField.setText("");
+                            lastNameField.setText("");
+                            emailField.setText("");
+                            JOptionPane.showMessageDialog(null, "Registration successful!");
+                            // User registration successful
+                            // Show a success message or navigate to the next page
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Username is taken. Registration failed. Please try again.");
 
-                        // User registration failed because the username already exists
-                        // Show an error message
+                            // User registration failed because the username already exists
+                            // Show an error message
+                        }
+                    } catch (SQLException ex) {
+                        // Handle the SQLException appropriately
+                        ex.printStackTrace();
                     }
-                } catch (SQLException ex) {
-                    // Handle the SQLException appropriately
-                    ex.printStackTrace();
+                }else{
+                    JOptionPane.showMessageDialog(null,"Please fill out all fields.");
                 }
             }
         });
