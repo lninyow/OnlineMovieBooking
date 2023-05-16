@@ -40,9 +40,12 @@ public class HomePageTest extends JFrame {
         setSize(1200, 705);
         setLocationRelativeTo(null);
 
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 5, 10, 5);
+        c.anchor = GridBagConstraints.WEST;
+
 
         // First row
         jLabel1 = new JLabel("Search for a movie: ");
@@ -88,7 +91,7 @@ public class HomePageTest extends JFrame {
             JLabel label = new JLabel(new ImageIcon(image));
             c.gridx = 0;
             c.gridy = 2;
-            c.gridwidth = 9;
+            c.gridwidth = 10;
             panel.add(label, c);
         } catch (IOException e) {
             // handle the exception
@@ -101,7 +104,6 @@ public class HomePageTest extends JFrame {
         lbBookYourTicket = new JLabel("Book Your Ticket");
         c.gridx = 0;
         c.gridy = 3;
-        c.anchor = GridBagConstraints.WEST;
         panel.add(lbBookYourTicket, c);
 
 
@@ -123,29 +125,17 @@ public class HomePageTest extends JFrame {
         newPane.add(btnBookTicket,BorderLayout.SOUTH);
         panel.add(newPane, c);
 
-
-
-
-
-            ImageIcon icon1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
-            imageMovie1 = new JLabel(icon1);
-
-
-
+        ImageIcon icon1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
+        imageMovie1 = new JLabel(icon1);
 
         ImageIcon icon2 = new ImageIcon("C://Users//Liden//Desktop//movie2.png");
         imageMovie2 = new JLabel(icon2);
 
-
-
         ImageIcon icon3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
         imageMovie3 = new JLabel(icon3);
 
-
-
         ImageIcon icon4 = new ImageIcon("C://Users//Liden//Desktop//movie4.png");
         imageMovie4 = new JLabel(icon4);
-
 
         ImageIcon icon5 = new ImageIcon("C://Users//Liden//Desktop//movie5.png");
         imageMovie5 = new JLabel(icon5);
@@ -165,11 +155,6 @@ public class HomePageTest extends JFrame {
 
 
 
-
-
-        //insert pictures
-
-
         //Fifth Row
 
 
@@ -179,6 +164,48 @@ public class HomePageTest extends JFrame {
         c.gridx = 2;
         c.gridy = 5;
         panel.add(jLabel2, c);
+
+        //Sixth Row
+
+        ImageIcon iconn1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
+        JLabel imageMoviee1 = new JLabel(iconn1);
+
+
+
+
+        ImageIcon iconn2 = new ImageIcon("C://Users//Liden//Desktop//movie2.png");
+        JLabel imageMoviee2 = new JLabel(iconn2);
+
+
+
+        ImageIcon iconn3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
+        JLabel imageMoviee3 = new JLabel(iconn3);
+
+
+
+        ImageIcon iconn4 = new ImageIcon("C://Users//Liden//Desktop//movie4.png");
+        JLabel imageMoviee4 = new JLabel(iconn4);
+
+
+        ImageIcon iconn5 = new ImageIcon("C://Users//Liden//Desktop//movie5.png");
+        JLabel imageMoviee5 = new JLabel(iconn5);
+
+
+
+
+        JPanel moviePanel1 = new JPanel(new FlowLayout());
+
+        moviePanel1.add(imageMoviee1);
+        moviePanel1.add(imageMoviee2);
+        moviePanel1.add(imageMoviee3);
+        moviePanel1.add(imageMoviee4);
+        moviePanel1.add(imageMoviee5);
+        c.gridx = 2;
+        c.gridy = 6;
+
+        panel.add(moviePanel1,c);
+
+
 
 
 

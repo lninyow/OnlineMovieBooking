@@ -7,8 +7,8 @@
        //new WelcomePage();
         HomePageTest newHomepage = new HomePageTest();
         newHomepage.setVisible(true);
-       // RegisterPage registrationPage = new RegisterPage();
-       // registrationPage.setVisible(true);
+        //RegisterPage registrationPage = new RegisterPage();
+        //registrationPage.setVisible(true);
 
 
 
