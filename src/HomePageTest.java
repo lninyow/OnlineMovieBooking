@@ -182,6 +182,7 @@ public class HomePageTest extends JFrame {
 
 
         JPanel moviePanel = new JPanel(new FlowLayout());
+        moviePanel.setBackground(new Color(43,43,43));
 
         moviePanel.add(imageMovie1);
         moviePanel.add(imageMovie2);
@@ -226,6 +227,7 @@ public class HomePageTest extends JFrame {
 
 
         JPanel moviePanel1 = new JPanel(new FlowLayout());
+        moviePanel1.setBackground(new Color(43,43,43));
 
         moviePanel1.add(imageComingSoon1);
         moviePanel1.add(imageComingSoon2);
