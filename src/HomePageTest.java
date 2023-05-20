@@ -37,18 +37,21 @@ public class HomePageTest extends JFrame {
     public HomePageTest() {
         setTitle("Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 705);
+        setSize(1200, 715);
         setLocationRelativeTo(null);
 
 
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(new Color(43,43,43));
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 5, 10, 5);
         c.anchor = GridBagConstraints.WEST;
 
 
         // First row
-        jLabel1 = new JLabel("Search for a movie: ");
+        jLabel1 = new JLabel("CinemaGo");
+        jLabel1.setFont(new Font("SansSerif", Font.BOLD, 24)); // Set font size to 24
+        jLabel1.setForeground(Color.WHITE);
         c.gridx = 0;
         c.gridy = 0;
         panel.add(jLabel1, c);
@@ -102,12 +105,16 @@ public class HomePageTest extends JFrame {
 
         // Third row
         lbBookYourTicket = new JLabel("Book Your Ticket");
+        lbBookYourTicket.setFont(new Font("SansSerif", Font.BOLD, 16)); // Set font size to 24
+        lbBookYourTicket.setForeground(Color.WHITE);
         c.gridx = 0;
         c.gridy = 3;
         panel.add(lbBookYourTicket, c);
 
 
         jLabel4 = new JLabel("In Theatres");
+        jLabel4.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
+        jLabel4.setForeground(Color.WHITE);
         c.gridx = 2;
         c.gridy = 3;
         panel.add(jLabel4, c);
@@ -161,33 +168,35 @@ public class HomePageTest extends JFrame {
 
 
         jLabel2 = new JLabel("Coming Soon");
+        jLabel2.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
+        jLabel2.setForeground(Color.WHITE);
         c.gridx = 2;
         c.gridy = 5;
         panel.add(jLabel2, c);
 
         //Sixth Row
 
-        ImageIcon iconn1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
+        ImageIcon iconn1 = new ImageIcon("C://Users//Liden//Desktop//mugentrain.png");
         JLabel imageMoviee1 = new JLabel(iconn1);
 
 
 
 
-        ImageIcon iconn2 = new ImageIcon("C://Users//Liden//Desktop//movie2.png");
+        ImageIcon iconn2 = new ImageIcon("C://Users//Liden//Desktop//expendables.png");
         JLabel imageMoviee2 = new JLabel(iconn2);
 
 
 
-        ImageIcon iconn3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
+        ImageIcon iconn3 = new ImageIcon("C://Users//Liden//Desktop//gotg.png");
         JLabel imageMoviee3 = new JLabel(iconn3);
 
 
 
-        ImageIcon iconn4 = new ImageIcon("C://Users//Liden//Desktop//movie4.png");
+        ImageIcon iconn4 = new ImageIcon("C://Users//Liden//Desktop//jaws.png");
         JLabel imageMoviee4 = new JLabel(iconn4);
 
 
-        ImageIcon iconn5 = new ImageIcon("C://Users//Liden//Desktop//movie5.png");
+        ImageIcon iconn5 = new ImageIcon("C://Users//Liden//Desktop//meg2.png");
         JLabel imageMoviee5 = new JLabel(iconn5);
 
 
@@ -204,7 +213,6 @@ public class HomePageTest extends JFrame {
         c.gridy = 6;
 
         panel.add(moviePanel1,c);
-
 
 
 
