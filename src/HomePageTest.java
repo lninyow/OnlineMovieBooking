@@ -52,7 +52,7 @@ public class HomePageTest extends JFrame {
         c.insets = new Insets(10, 5, 5, 5);
         c.anchor = GridBagConstraints.WEST;
 
-
+        //First row of homepage
         // First row
         jLabel1 = new JLabel("CinemaGo");
         jLabel1.setFont(new Font("SansSerif", Font.BOLD, 24)); // Set font size to 24
@@ -92,7 +92,7 @@ public class HomePageTest extends JFrame {
         c.gridy = 0;
         panel.add(btnContactUs, c);
 
-
+    //Second row of homepage
   // Second row
         try {
             BufferedImage image = ImageIO.read(new File("C://Users//Liden//Downloads//longpic.png"));
@@ -107,7 +107,7 @@ public class HomePageTest extends JFrame {
 
 
 
-
+        //Third row of homepage
         // Third row
         lbBookYourTicket = new JLabel("Book Your Ticket");
         lbBookYourTicket.setFont(new Font("SansSerif", Font.BOLD, 16)); // Set font size to 24
@@ -124,7 +124,7 @@ public class HomePageTest extends JFrame {
         c.gridy = 3;
         panel.add(jLabel4, c);
 
-
+        //Fourth Row of homepage
         //Fourth Row
         JPanel newPane = new JPanel();
         newPane.setLayout(new BorderLayout());
@@ -148,15 +148,9 @@ public class HomePageTest extends JFrame {
 
 
 
-
-
-
-
-
         ImageIcon icon3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
         imageMovie3 = new JLabel(icon3);
-
-
+        //movie3 details below
         //movie 3 details
         JPanel blackWidowPanel = new JPanel(new GridBagLayout());
         GridBagConstraints bw = new GridBagConstraints();
@@ -257,7 +251,7 @@ public class HomePageTest extends JFrame {
         panel.add(moviePanel,c);
 
 
-
+        //Fifth Row of homepage
         //Fifth Row
         jLabel2 = new JLabel("Coming Soon");
         jLabel2.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
@@ -265,7 +259,7 @@ public class HomePageTest extends JFrame {
         c.gridx = 2;
         c.gridy = 5;
         panel.add(jLabel2, c);
-
+        //Sixth Row of homepage
         //Sixth Row
 
         ImageIcon iconn1 = new ImageIcon("C://Users//Liden//Desktop//mugentrain.png");
@@ -307,17 +301,7 @@ public class HomePageTest extends JFrame {
         panel.add(moviePanel1,c);
 
 
-        add(panel,BorderLayout.CENTER);
-        add(blackWidowPanel,BorderLayout.CENTER);
-        panel.setVisible(true);
-        blackWidowPanel.setVisible(false);
-        imageMovie3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                panel.setVisible(false);
-                blackWidowPanel.setVisible(true);
-            }
-        });
+       getContentPane().add(panel,BorderLayout.CENTER);
 
     }
 }
