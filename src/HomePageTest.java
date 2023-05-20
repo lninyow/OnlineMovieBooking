@@ -37,14 +37,14 @@ public class HomePageTest extends JFrame {
     public HomePageTest() {
         setTitle("Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 715);
+        setSize(1200, 705);
         setLocationRelativeTo(null);
 
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(43,43,43));
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 5, 10, 5);
+        c.insets = new Insets(10, 5, 5, 5);
         c.anchor = GridBagConstraints.WEST;
 
 
@@ -177,38 +177,38 @@ public class HomePageTest extends JFrame {
         //Sixth Row
 
         ImageIcon iconn1 = new ImageIcon("C://Users//Liden//Desktop//mugentrain.png");
-        JLabel imageMoviee1 = new JLabel(iconn1);
+        imageComingSoon1 = new JLabel(iconn1);
 
 
 
 
         ImageIcon iconn2 = new ImageIcon("C://Users//Liden//Desktop//expendables.png");
-        JLabel imageMoviee2 = new JLabel(iconn2);
+        imageComingSoon2 = new JLabel(iconn2);
 
 
 
         ImageIcon iconn3 = new ImageIcon("C://Users//Liden//Desktop//gotg.png");
-        JLabel imageMoviee3 = new JLabel(iconn3);
+        imageComingSoon3 = new JLabel(iconn3);
 
 
 
         ImageIcon iconn4 = new ImageIcon("C://Users//Liden//Desktop//jaws.png");
-        JLabel imageMoviee4 = new JLabel(iconn4);
+        imageComingSoon4 = new JLabel(iconn4);
 
 
         ImageIcon iconn5 = new ImageIcon("C://Users//Liden//Desktop//meg2.png");
-        JLabel imageMoviee5 = new JLabel(iconn5);
+        imageComingSoon5 = new JLabel(iconn5);
 
 
 
 
         JPanel moviePanel1 = new JPanel(new FlowLayout());
 
-        moviePanel1.add(imageMoviee1);
-        moviePanel1.add(imageMoviee2);
-        moviePanel1.add(imageMoviee3);
-        moviePanel1.add(imageMoviee4);
-        moviePanel1.add(imageMoviee5);
+        moviePanel1.add(imageComingSoon1);
+        moviePanel1.add(imageComingSoon2);
+        moviePanel1.add(imageComingSoon3);
+        moviePanel1.add(imageComingSoon4);
+        moviePanel1.add(imageComingSoon5);
         c.gridx = 2;
         c.gridy = 6;
 
