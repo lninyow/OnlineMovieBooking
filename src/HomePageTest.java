@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,13 +37,16 @@ public class HomePageTest extends JFrame {
     private JLabel imageComingSoon5;
 
     public HomePageTest() {
-        setTitle("Register");
+        setTitle("HomePage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 705);
+        setSize(1200, 715);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
 
 
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setPreferredSize(new Dimension(1206,715));
         panel.setBackground(new Color(43,43,43));
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 5, 5, 5);
@@ -135,11 +140,102 @@ public class HomePageTest extends JFrame {
         ImageIcon icon1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
         imageMovie1 = new JLabel(icon1);
 
+
+
+
         ImageIcon icon2 = new ImageIcon("C://Users//Liden//Desktop//movie2.png");
         imageMovie2 = new JLabel(icon2);
 
+
+
+
+
+
+
+
         ImageIcon icon3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
         imageMovie3 = new JLabel(icon3);
+
+
+        //movie 3 details
+        JPanel blackWidowPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints bw = new GridBagConstraints();
+        blackWidowPanel.setPreferredSize(new Dimension(1201,706));
+        blackWidowPanel.setBackground(new Color(43,43,43));
+        bw.anchor = GridBagConstraints.NORTHWEST;
+        bw.insets = new Insets(10, 5, 5, 5);
+
+        JButton backButton1 = new JButton("Back");
+        backButton1.setForeground(Color.WHITE);
+        backButton1.setBackground(new Color(255,30,20));
+        bw.gridx=0;
+        bw.gridy=0;
+        blackWidowPanel.add(backButton1,bw);
+
+        ImageIcon blackWidowIcon = new ImageIcon("C://Users//Liden//Desktop//blck.jpg");
+        Image resizedImage = blackWidowIcon.getImage().getScaledInstance(400,550,Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+        JLabel blackWidowPoster = new JLabel(resizedIcon);
+        bw.gridx=0;
+        bw.gridy=1;
+        bw.gridheight=5;
+        bw.gridwidth=3;
+        blackWidowPanel.add(blackWidowPoster,bw);
+
+
+        JPanel movieDesc = new JPanel(new GridLayout(6,0));
+        movieDesc.setBackground(new Color(43,43,43));
+        JLabel title1 = new JLabel("Black Widow");
+        title1.setFont(new Font("SansSerif", Font.BOLD, 32));
+        title1.setForeground(Color.WHITE);
+
+        movieDesc.add(title1);
+
+        JLabel bwdesc = new JLabel("2021 | 2h 13m | 16");
+        bwdesc.setForeground(Color.WHITE);
+        bwdesc.setFont(new Font("SansSerif",Font.BOLD,12));
+        movieDesc.add(bwdesc);
+
+        JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        flowPanel.setBackground(new Color(43,43,43));
+        flowPanel.setPreferredSize(new Dimension(300,200));
+        JLabel plotsum1 = new JLabel();
+        plotsum1.setText("<html>Natasha Romanoff, aka Black Widow, confronts the darker parts of her ledger when a dangerous conspiracy with<br>" +
+                "ties to her past arises. Pursued by a force that will stop at nothing to bring her down, Natasha must deal with<br>" +
+                "her history as a spy, and the broken relationships left in her wake long before she became an Avenger.</html>");
+        plotsum1.setForeground(Color.WHITE);
+        plotsum1.setFont(new Font("SansSerif",Font.BOLD,13));
+        flowPanel.add(plotsum1);
+
+        movieDesc.add(flowPanel);
+
+
+
+        JLabel starring1 = new JLabel("Starring Scarlett Johansson, Florence Pugh, David Harbour, Olga Kurylenko, Robert Downey Jr.");
+        starring1.setFont(new Font("SansSerif",Font.BOLD, 14));
+        starring1.setForeground(Color.WHITE);
+        movieDesc.add(starring1);
+
+
+
+        JLabel directed1 = new JLabel("Directed by Cate ShortLand");
+        directed1.setForeground(Color.WHITE);
+        directed1.setFont(new Font("SansSerif",Font.BOLD, 14));
+        movieDesc.add(directed1);
+
+
+        JLabel genre1 = new JLabel("Genre Action, Superhero, Science fiction, Spy, Thriller");
+        genre1.setForeground(Color.WHITE);
+        genre1.setFont(new Font("SansSerif",Font.BOLD, 14));
+        movieDesc.add(genre1);
+
+        bw.gridx = 4;
+        bw.gridy = 1;
+        bw.gridheight = 5;
+        blackWidowPanel.add(movieDesc,bw);
+
+
+
 
         ImageIcon icon4 = new ImageIcon("C://Users//Liden//Desktop//movie4.png");
         imageMovie4 = new JLabel(icon4);
@@ -163,10 +259,6 @@ public class HomePageTest extends JFrame {
 
 
         //Fifth Row
-
-
-
-
         jLabel2 = new JLabel("Coming Soon");
         jLabel2.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
         jLabel2.setForeground(Color.WHITE);
@@ -215,9 +307,17 @@ public class HomePageTest extends JFrame {
         panel.add(moviePanel1,c);
 
 
-
-
-        getContentPane().add(panel, BorderLayout.NORTH);
+        add(panel,BorderLayout.CENTER);
+        add(blackWidowPanel,BorderLayout.CENTER);
+        panel.setVisible(true);
+        blackWidowPanel.setVisible(false);
+        imageMovie3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                panel.setVisible(false);
+                blackWidowPanel.setVisible(true);
+            }
+        });
 
     }
 }
