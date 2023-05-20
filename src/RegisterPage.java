@@ -1,7 +1,10 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +15,7 @@ public class RegisterPage extends JFrame {
     boolean valid = true;
     MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
 
-    public RegisterPage() throws SQLException {
+    public RegisterPage() {
         // Set up the registration page
 
         setTitle("Register");
@@ -82,21 +85,6 @@ public class RegisterPage extends JFrame {
         registerButton.setBackground(buttonColor);
         registerButton.setForeground(Color.WHITE);
 
-        if (usernameField.getText().isEmpty()) {
-            valid = false;
-        }
-        if (new String(passwordField.getPassword()).isEmpty()) {
-            valid = false;
-        }
-        if (firstNameField.getText().isEmpty()) {
-            valid = false;
-        }
-        if (lastNameField.getText().isEmpty()) {
-            valid = false;
-        }
-        if (emailField.getText().isEmpty()) {
-            valid = false;
-        }
 
         registerButton.addActionListener(new ActionListener() {
             @Override
@@ -108,6 +96,11 @@ public class RegisterPage extends JFrame {
                 String firstName = firstNameField.getText();
                 String lastName = lastNameField.getText();
                 String emailAddress = emailField.getText();
+                boolean valid = true;
+                if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || emailAddress.isEmpty()) {
+                    valid = false;
+                }
+
                 if (valid) {
                     try {
                         boolean success = registerUser(username, password, firstName, lastName, emailAddress);
@@ -139,8 +132,35 @@ public class RegisterPage extends JFrame {
 
         JLabel loginLabel = new JLabel("Already have an account? ");
         JButton loginButton = new JButton("Log in now");
-        loginButton.setForeground(buttonColor);
-        loginButton.setBorder(null);
+        Border emptyBorder = BorderFactory.createEmptyBorder();
+        loginButton.setBorder(emptyBorder);
+        loginButton.setForeground(Color.BLUE);
+        loginButton.setContentAreaFilled(false);
+
+        loginButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                loginButton.setContentAreaFilled(true);
+                loginButton.setBackground(Color.red);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                loginButton.setContentAreaFilled(true);
+                loginButton.setBackground(Color.WHITE);
+
+            }
+        });
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WelcomePage newWelcomePage = new WelcomePage();
+                newWelcomePage.setVisible(true);
+                setVisible(false);
+            }
+        });
 
 
         JPanel registerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
