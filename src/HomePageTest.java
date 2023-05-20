@@ -132,7 +132,7 @@ public class HomePageTest extends JFrame {
         panel.add(lbBookYourTicket, c);
 
 
-        jLabel4 = new JLabel("In Theatres");
+        jLabel4 = new JLabel("In Theaters");
         jLabel4.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
         jLabel4.setForeground(Color.WHITE);
         c.gridx = 2;
