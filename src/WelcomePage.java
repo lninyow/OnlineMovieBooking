@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Arrays;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class WelcomePage extends JFrame {
     private JPanel loginPanel;
@@ -30,77 +31,73 @@ public class WelcomePage extends JFrame {
             // Create the login panel
         // Create the login panel
         loginPanel = new JPanel();
-        loginPanel.setPreferredSize(new Dimension(800, 900));
+        loginPanel.setPreferredSize(new Dimension(600, 900));
 
         loginPanel.setLayout(new GridBagLayout());
+        GridBagConstraints welcomeConstraints = new GridBagConstraints();
+
 
         // Create the welcome label
         welcomeLabel = new JLabel("WELCOME");
         welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 40));
-        GridBagConstraints welcomeConstraints = new GridBagConstraints();
         welcomeConstraints.gridx = 0;
         welcomeConstraints.gridy = 0;
-        welcomeConstraints.insets = new Insets(0, 100, 150, 0);
+        welcomeConstraints.gridwidth=2;
+        welcomeConstraints.insets = new Insets(0, 0, 50, 0);
         loginPanel.add(welcomeLabel, welcomeConstraints);
 
         loginLabel = new JPanel();
         loginLabel.setLayout(new FlowLayout());
         loginLabelText = new JLabel("Log in");
         loginLabelText.setFont(new Font("SansSerif", Font.BOLD, 40));
-        GridBagConstraints loginConstraints = new GridBagConstraints();
-        loginConstraints.gridx = 0;
-        loginConstraints.gridy = 0;
-        loginConstraints.insets = new Insets(100, 0, 50, 0);
+        welcomeConstraints.gridx = 0;
+        welcomeConstraints.gridy = 1;
+        welcomeConstraints.gridwidth=1;
+        welcomeConstraints.insets = new Insets(0, 0, 0, 0);
         loginLabel.add(loginLabelText);
-        loginPanel.add(loginLabel, loginConstraints);
+        loginPanel.add(loginLabel, welcomeConstraints);
 
 
-//        noAccountPanel = new JPanel();
-//        noAccountPanel.setLayout(new FlowLayout());
-//        noAccountLabel = new JLabel("Dont have an account?");
-//        noAccountLabel.setFont(new Font("SansSerif",Font.PLAIN,25));
-//        GridBagConstraints c = new GridBagConstraints();
-//        c.gridx = 0;
-//        c.gridy = 0;
-//        noAccountPanel.add(noAccountLabel);
-//        loginPanel.add(noAccountPanel,c);
+        noAccountPanel = new JPanel();
+        noAccountPanel.setLayout(new FlowLayout());
+        noAccountLabel = new JLabel("Dont have an account?");
+        noAccountLabel.setFont(new Font("SansSerif",Font.PLAIN,12));
+        welcomeConstraints.gridx = 0;
+        welcomeConstraints.gridy = 2;
+        noAccountPanel.add(noAccountLabel);
+        loginPanel.add(noAccountPanel,welcomeConstraints);
 
 
         // Create the username label and field
         usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("",Font.PLAIN,15));
-        GridBagConstraints usernameLabelConstraints = new GridBagConstraints();
-        usernameLabelConstraints.gridx = 0;
-        usernameLabelConstraints.gridy = 1;
-        usernameLabelConstraints.insets = new Insets(0, 0, 10, 0);
-        loginPanel.add(usernameLabel, usernameLabelConstraints);
+        welcomeConstraints.gridx=0;
+        welcomeConstraints.gridy=3;
+        welcomeConstraints.insets = new Insets(0, 0, 10, 0);
+        loginPanel.add(usernameLabel, welcomeConstraints);
 
         usernameField = new JTextField(20);
         usernameField.setPreferredSize(new Dimension(200, 30));
-        GridBagConstraints usernameFieldConstraints = new GridBagConstraints();
-        usernameFieldConstraints.gridx = 1;
-        usernameFieldConstraints.gridy = 1;
-        usernameFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        usernameFieldConstraints.insets = new Insets(10, 0, 10, 0);
-        loginPanel.add(usernameField, usernameFieldConstraints);
+        welcomeConstraints.gridx= 1;
+        welcomeConstraints.gridy= 3;
+        welcomeConstraints.insets = new Insets(10, 0, 10, 0);
+        loginPanel.add(usernameField, welcomeConstraints);
+
 
         // Create the password label and field
         passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("",Font.PLAIN,15));
-        GridBagConstraints passwordLabelConstraints = new GridBagConstraints();
-        passwordLabelConstraints.gridx = 0;
-        passwordLabelConstraints.gridy = 2;
-        passwordLabelConstraints.insets = new Insets(0, 0, 10, 0);
-        loginPanel.add(passwordLabel, passwordLabelConstraints);
+        welcomeConstraints.gridx = 0;
+        welcomeConstraints.gridy = 4;
+        welcomeConstraints.insets = new Insets(0, 0, 10, 0);
+        loginPanel.add(passwordLabel, welcomeConstraints);
 
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(200, 30));
-        GridBagConstraints passwordFieldConstraints = new GridBagConstraints();
-        passwordFieldConstraints.gridx = 1;
-        passwordFieldConstraints.gridy = 2;
-        passwordFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        passwordFieldConstraints.insets = new Insets(0, 0, 10, 0);
-        loginPanel.add(passwordField, passwordFieldConstraints);
+        welcomeConstraints.gridx = 1;
+        welcomeConstraints.gridy = 4;
+        welcomeConstraints.insets = new Insets(10, 0, 10, 0);
+        loginPanel.add(passwordField, welcomeConstraints);
 
         // Create the login button
         loginButton = new JButton("Log in");
@@ -108,18 +105,17 @@ public class WelcomePage extends JFrame {
         loginButton.setPreferredSize(new Dimension(215,35));
         loginButton.setBackground(buttonColor);
         loginButton.setForeground(Color.WHITE);
-        GridBagConstraints loginButtonConstraints = new GridBagConstraints();
-        loginButtonConstraints.gridx = 1;
-        loginButtonConstraints.gridy = 3;
-        loginButtonConstraints.anchor = GridBagConstraints.LINE_END;
-        loginPanel.add(loginButton, loginButtonConstraints);
+        welcomeConstraints.gridx = 1;
+        welcomeConstraints.gridy = 5;
+        welcomeConstraints.anchor = GridBagConstraints.LINE_END;
+        loginPanel.add(loginButton, welcomeConstraints);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText(); // Replace tfUsername with your actual JTextField for username input
-                char[] passwordchar = passwordField.getPassword();
-                String password = new String(passwordchar); // Replace pfPassword with your actual JPasswordField for password input
+                String username = usernameField.getText();
+                char[] passwordchar = passwordField.getPassword(); //converts the passwordField to a char array
+                String password = new String(passwordchar); //sets the password into a new string from password char array
                 System.out.println(password);
 
                 boolean isLoggedIn = false;
@@ -142,12 +138,14 @@ public class WelcomePage extends JFrame {
         });
 
             // Create the image label
-            ImageIcon imageIcon = new ImageIcon("image.jpg");
-            Image image = imageIcon.getImage().getScaledInstance(800, 900, Image.SCALE_SMOOTH);
+            ImageIcon imageIcon = new ImageIcon("C://Users//Liden//Desktop//blckwidowposter.jpg");
+            Image image = imageIcon.getImage().getScaledInstance(400, 500, Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(image);
 
             imageLabel = new JLabel(imageIcon);
-            imageLabel.setBounds(0, 0, 800, 900);
+        // Create an empty border with padding
+        Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 50);
+        imageLabel.setBorder(emptyBorder);
 
             // Add the components to the frame
             add(loginPanel, BorderLayout.WEST);
