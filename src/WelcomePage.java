@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class WelcomePage extends JFrame {
@@ -18,6 +20,9 @@ public class WelcomePage extends JFrame {
     private JPanel noAccountPanel;
     private JLabel noAccountLabel;
     private JLabel RegisterHereLabel;
+
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
+
 
 
     public WelcomePage() {
@@ -109,6 +114,33 @@ public class WelcomePage extends JFrame {
         loginButtonConstraints.anchor = GridBagConstraints.LINE_END;
         loginPanel.add(loginButton, loginButtonConstraints);
 
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText(); // Replace tfUsername with your actual JTextField for username input
+                char[] passwordchar = passwordField.getPassword();
+                String password = new String(passwordchar); // Replace pfPassword with your actual JPasswordField for password input
+                System.out.println(password);
+
+                boolean isLoggedIn = false;
+                try {
+                    isLoggedIn = login(username, password);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                if (isLoggedIn) {
+                    // Perform actions for a successful login, such as navigating to the next page or showing a success message
+                    JOptionPane.showMessageDialog(null, "Login successful!");
+                    HomePageTest newHomepage = new HomePageTest();
+                    newHomepage.setVisible(true);
+                } else {
+                    // Handle incorrect login credentials, such as displaying an error message
+                    JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
+                }
+            }
+        });
+
             // Create the image label
             ImageIcon imageIcon = new ImageIcon("image.jpg");
             Image image = imageIcon.getImage().getScaledInstance(800, 900, Image.SCALE_SMOOTH);
@@ -121,14 +153,6 @@ public class WelcomePage extends JFrame {
             add(loginPanel, BorderLayout.WEST);
             add(imageLabel, BorderLayout.EAST);
 
-            loginButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    HomePageTest home = new HomePageTest();
-                    home.setVisible(true);
-                    setVisible(false);
-                }
-            });
 
             // Set frame properties
             setSize(1200, 705);
@@ -136,6 +160,22 @@ public class WelcomePage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(true);
         }
+
+
+    public boolean login(String username, String password) throws SQLException {
+        Connection conn = dbMovieManager.getDatabaseConnection();
+        String query = "SELECT * FROM user WHERE username = ? AND password = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // If the query returns any rows, the login is successful
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     }
 
 
