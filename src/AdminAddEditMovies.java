@@ -92,7 +92,7 @@ public class AdminAddEditMovies extends JFrame {
                     directorField.setText(selectedMovie.getDirector());
                     genreField.setText(selectedMovie.getGenre());
                     plotSummaryArea.setText(selectedMovie.getPlotSummary());
-                   // priceField.setText(String.valueOf(selectedMovie.getPrice()));
+                    // priceField.setText(String.valueOf(selectedMovie.getPrice()));
                 }
             }
         });
@@ -199,12 +199,23 @@ public class AdminAddEditMovies extends JFrame {
 
                 // Check if the selected item in the JComboBox is equal to 0
                 if (movieSelector.getSelectedItem().equals(0)) {
+                    // Check if the number of movies is already 5
+                    if (moviesList.size() >= 5) {
+                        JOptionPane.showMessageDialog(AdminAddEditMovies.this,
+                                "Cannot add more than 5 movies", "Limit Exceeded", JOptionPane.ERROR_MESSAGE);
+                        return; // Exit the method without adding the movie
+                    }
+
                     // Create a new movie and add it to the database
                     movie = new Movies(0, title, releaseYear, director, genre,price, plotSummary);
-                    // Set other movie properties
-                   // movie.setPrice(price);
                     // Add the movie to the database
                     movie.addMovie();
+
+                    // Add the movie to the moviesList
+                    moviesList.add(movie);
+
+                    // Add the movie ID to the movieSelector dropdown
+                    movieSelector.addItem(movie.getId());
                 } else {
                     // Get the selected movie ID from the movieSelector dropdown
                     int selectedMovieId = (int) movieSelector.getSelectedItem();
@@ -219,6 +230,7 @@ public class AdminAddEditMovies extends JFrame {
                     movie.setGenre(genre);
                     movie.setPlotSummary(plotSummary);
                     movie.setPrice(String.valueOf(price));
+
                     // Update the movie in the database
                     movie.updateMovie();
                 }
@@ -227,6 +239,7 @@ public class AdminAddEditMovies extends JFrame {
                 clearFields();
             }
         });
+
 
 
 
@@ -252,7 +265,7 @@ public class AdminAddEditMovies extends JFrame {
         directorField.setText(movie.getDirector());
         genreField.setText(movie.getGenre());
         plotSummaryArea.setText(movie.getPlotSummary());
-       // priceField.setText(Double.toString(movie.getPrice()));
+        // priceField.setText(Double.toString(movie.getPrice()));
     }
 
     private Movies getMovieById(int movieId) {
@@ -286,7 +299,7 @@ public class AdminAddEditMovies extends JFrame {
 
                 // Create a new Movies object with the retrieved details
                 Movies movie = new Movies(id, title, releaseYear, director, genre,price, plotSummary);
-              //  movie.setPrice(price);
+                //  movie.setPrice(price);
                 movie.setUrlImage(urlImage);
 
                 this.movie = movie;
