@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,6 +34,8 @@ public class HomePageTest extends JFrame {
     private JLabel imageMovie3;
     private JLabel imageMovie4;
     private JLabel imageMovie5;
+    private JPanel cardPanel; // Declare the cardPanel variable at the class level
+
     private JLabel imageComingSoon1;
     private JLabel imageComingSoon2;
     private JLabel imageComingSoon3;
@@ -52,12 +55,11 @@ public class HomePageTest extends JFrame {
 
 
         mainPanel = createMainPanel();
-        blackWidowPanel = createMovieDetails();
 
         CardLayout cardLayout = new CardLayout();
-        JPanel cardPanel = new JPanel(cardLayout);
+        cardPanel = new JPanel(cardLayout); // Assign the created JPanel to the class-level cardPanel variable
         cardPanel.add(mainPanel, "mainPanel");
-        cardPanel.add(blackWidowPanel, "blackWidowPanel");
+//        cardPanel.add(blackWidowPanel, "blackWidowPanel");
 
         getContentPane().add(cardPanel,BorderLayout.CENTER);
     }
@@ -208,6 +210,12 @@ public class HomePageTest extends JFrame {
 
                 // Create a JLabel with the movie image
                 JLabel imageLabel = new JLabel(loopicon);
+                imageLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        handleMovieImageClick(imageUrl);
+                    }
+                });
 
                 // Add the imageLabel to the moviePanel
                 moviePanel.add(imageLabel);
@@ -278,82 +286,87 @@ public class HomePageTest extends JFrame {
 
 
 
-    private JPanel createMovieDetails() {
-        JPanel blackWidowPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints bw = new GridBagConstraints();
-        blackWidowPanel.setPreferredSize(new Dimension(1201, 706));
-        blackWidowPanel.setBackground(new Color(43, 43, 43));
-        bw.anchor = GridBagConstraints.NORTHWEST;
-        bw.insets = new Insets(10, 5, 5, 5);
+    private JPanel createMovieDetails(String imageUrl) {
+        Movies movie = Movies.retrieveMovieDetailsFromDatabase(imageUrl);
 
-        JButton backButton1 = new JButton("Back");
-        backButton1.setForeground(Color.WHITE);
-        backButton1.setBackground(new Color(255, 30, 20));
-        backButton1.addActionListener(e -> {
-            blackWidowPanel.setVisible(false); // Hide the blackWidowPanel
+        JPanel moviePanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        moviePanel.setPreferredSize(new Dimension(1201, 706));
+        moviePanel.setBackground(new Color(43, 43, 43));
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.insets = new Insets(10, 5, 5, 5);
+
+        JButton backButton = new JButton("Back");
+        backButton.setForeground(Color.WHITE);
+        backButton.setBackground(new Color(255, 30, 20));
+        backButton.addActionListener(e -> {
+            moviePanel.setVisible(false); // Hide the moviePanel
             mainPanel.setVisible(true); // Show the main panel
         });
-        bw.gridx = 0;
-        bw.gridy = 0;
-        blackWidowPanel.add(backButton1, bw);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        moviePanel.add(backButton, gbc);
+        try {
+            // Create and set the movie poster
+            URL url = new URL(imageUrl);
+            Image image = ImageIO.read(url);
+            Image resizedImage = image.getScaledInstance(400, 550, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+            JLabel posterLabel = new JLabel(resizedIcon);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridheight = 5;
+            gbc.gridwidth = 3;
+            moviePanel.add(posterLabel, gbc);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        ImageIcon blackWidowIcon = new ImageIcon("C://Users//Liden//Desktop//blck.jpg");
-        Image resizedImage = blackWidowIcon.getImage().getScaledInstance(400, 550, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedImage);
-        JLabel blackWidowPoster = new JLabel(resizedIcon);
-        bw.gridx = 0;
-        bw.gridy = 1;
-        bw.gridheight = 5;
-        bw.gridwidth = 3;
-        blackWidowPanel.add(blackWidowPoster, bw);
+        JPanel movieDescPanel = new JPanel(new GridLayout(6, 0));
+        movieDescPanel.setBackground(new Color(43, 43, 43));
 
+        JLabel titleLabel = new JLabel(movie.getTitle());
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
+        titleLabel.setForeground(Color.WHITE);
+        movieDescPanel.add(titleLabel);
 
-        JPanel movieDesc = new JPanel(new GridLayout(6, 0));
-        movieDesc.setBackground(new Color(43, 43, 43));
-        JLabel title1 = new JLabel("BLACKWINDOWS");
-        title1.setFont(new Font("SansSerif", Font.BOLD, 32));
-        title1.setForeground(Color.WHITE);
+        JLabel descLabel = new JLabel(movie.getPlotSummary());
+        descLabel.setForeground(Color.WHITE);
+        descLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        movieDescPanel.add(descLabel);
 
-        movieDesc.add(title1);
+        JLabel directedLabel = new JLabel("Directed by " + movie.getDirector());
+        directedLabel.setForeground(Color.WHITE);
+        directedLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        movieDescPanel.add(directedLabel);
 
-        JLabel bwdesc = new JLabel("Test");
-        bwdesc.setForeground(Color.WHITE);
-        bwdesc.setFont(new Font("SansSerif", Font.BOLD, 12));
-        movieDesc.add(bwdesc);
+        JLabel genreLabel = new JLabel("Genre: " + movie.getGenre());
+        genreLabel.setForeground(Color.WHITE);
+        genreLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        movieDescPanel.add(genreLabel);
 
-        JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        flowPanel.setBackground(new Color(43, 43, 43));
-        flowPanel.setPreferredSize(new Dimension(300, 200));
-        JLabel plotsum1 = new JLabel();
-        plotsum1.setText("<html>" + "TEST" + "</html>");
-        plotsum1.setForeground(Color.WHITE);
-        plotsum1.setFont(new Font("SansSerif", Font.BOLD, 13));
-        flowPanel.add(plotsum1);
+        gbc.gridx = 4;
+        gbc.gridy = 1;
+        gbc.gridheight = 5;
+        moviePanel.add(movieDescPanel, gbc);
 
-        movieDesc.add(flowPanel);
+        return moviePanel;
+    }
 
-//        JLabel starring1 = new JLabel("Starring " + movie.getStarring());
-//        starring1.setFont(new Font("SansSerif", Font.BOLD, 14));
-//        starring1.setForeground(Color.WHITE);
-//        movieDesc.add(starring1);
+    private void handleMovieImageClick(String imageUrl) {
+        // Create a new movie details panel for the clicked movie
+        JPanel movieDetailsPanel = createMovieDetails(imageUrl);
 
-        JLabel directed1 = new JLabel("Directed by ");
-        directed1.setForeground(Color.WHITE);
-        directed1.setFont(new Font("SansSerif", Font.BOLD, 14));
-        movieDesc.add(directed1);
+        // Get the CardLayout from the cardPanel
+        CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
 
-        JLabel genre1 = new JLabel("Genre ");
-        genre1.setForeground(Color.WHITE);
-        genre1.setFont(new Font("SansSerif", Font.BOLD, 14));
-        movieDesc.add(genre1);
+        // Add the movie details panel to the cardPanel
+        cardPanel.add(movieDetailsPanel, imageUrl);
 
-        bw.gridx = 4;
-        bw.gridy = 1;
-        bw.gridheight = 5;
-        blackWidowPanel.add(movieDesc, bw);
-
-        return blackWidowPanel;
+        // Show the movie details panel
+        cardLayout.show(cardPanel, imageUrl);
     }
 
 
 }
+

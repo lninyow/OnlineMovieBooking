@@ -160,4 +160,41 @@ public class Movies {
 
         return moviePosters;
     }
+
+
+
+    public static Movies retrieveMovieDetailsFromDatabase(String imageUrl) {
+        Movies movie = null;
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
+            String query = "SELECT * FROM movie WHERE url_image = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, imageUrl);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Extract the movie details from the result set
+                int id = resultSet.getInt("movie_id");
+                String title = resultSet.getString("title");
+                int releaseYear = resultSet.getInt("release_year");
+                String director = resultSet.getString("director");
+                String genre = resultSet.getString("genre");
+                double price = resultSet.getDouble("price");
+                String plotSummary = resultSet.getString("plot_summary");
+
+                // Create a new Movies object with the retrieved details
+                movie = new Movies(id, title, releaseYear, director, genre, price, plotSummary, imageUrl);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return movie;
+    }
+
+
 }
