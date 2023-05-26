@@ -4,10 +4,13 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JFrame;
+import java.util.*;
+import java.util.List;
 import javax.swing.border.EmptyBorder;
 
 
@@ -152,43 +155,72 @@ public class HomePageTest extends JFrame {
         newPane.add(btnBookTicket, BorderLayout.SOUTH);
         panel.add(newPane, c);
 
-        ImageIcon icon1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
-        imageMovie1 = new JLabel(icon1);
 
 
-        ImageIcon icon2 = new ImageIcon("C://Users//Liden//Desktop//movie2.png");
-        imageMovie2 = new JLabel(icon2);
 
+//        ImageIcon icon1 = new ImageIcon("C://Users//Liden//Desktop//movie1.png");
+//        imageMovie1 = new JLabel(icon1);
+//
+//
+//        ImageIcon icon2 = new ImageIcon("C://Users//Liden//Desktop//movie2.png");
+//        imageMovie2 = new JLabel(icon2);
+//
+//
+//        ImageIcon icon3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
+//        imageMovie3 = new JLabel(icon3);
+//        //movie3 details below
+//        //movie 3 details
+////        imageMovie3.addMouseListener(new MouseAdapter() {
+////            @Override
+////            public void mouseClicked(MouseEvent e) {
+////                super.mouseClicked(e);
+////                mainPanel.setVisible(false); // Hide the main panel
+////                blackWidowPanel.setVisible(true); // Show the blackWidowPanel
+////            }
+////        });
+//
+//
+//        ImageIcon icon4 = new ImageIcon("C://Users//Liden//Desktop//movie4.png");
+//        imageMovie4 = new JLabel(icon4);
+//
+//        ImageIcon icon5 = new ImageIcon("C://Users//Liden//Desktop//movie5.png");
+//        imageMovie5 = new JLabel(icon5);
 
-        ImageIcon icon3 = new ImageIcon("C://Users//Liden//Desktop//movie3.png");
-        imageMovie3 = new JLabel(icon3);
-        //movie3 details below
-        //movie 3 details
-        imageMovie3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                mainPanel.setVisible(false); // Hide the main panel
-                blackWidowPanel.setVisible(true); // Show the blackWidowPanel
-            }
-        });
-
-
-        ImageIcon icon4 = new ImageIcon("C://Users//Liden//Desktop//movie4.png");
-        imageMovie4 = new JLabel(icon4);
-
-        ImageIcon icon5 = new ImageIcon("C://Users//Liden//Desktop//movie5.png");
-        imageMovie5 = new JLabel(icon5);
-
+        List<String> moviePosters = Movies.retrieveMoviePostersFromDatabase();
 
         JPanel moviePanel = new JPanel(new FlowLayout());
         moviePanel.setBackground(new Color(43,43,43));
 
-        moviePanel.add(imageMovie1);
-        moviePanel.add(imageMovie2);
-        moviePanel.add(imageMovie3);
-        moviePanel.add(imageMovie4);
-        moviePanel.add(imageMovie5);
+        for (String imageUrl : moviePosters) {
+
+            if(imageUrl == null){
+                continue;
+            }
+            try {
+                URL url = new URL(imageUrl);
+                Image image = ImageIO.read(url);
+
+                // Resize the image to 200x200 pixels
+                Image scaledImage = image.getScaledInstance(125, 180, Image.SCALE_SMOOTH);
+
+                // Create an ImageIcon from the scaled image
+                ImageIcon loopicon = new ImageIcon(scaledImage);
+
+                // Create a JLabel with the movie image
+                JLabel imageLabel = new JLabel(loopicon);
+
+                // Add the imageLabel to the moviePanel
+                moviePanel.add(imageLabel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+//        moviePanel.add(imageMovie1);
+//        moviePanel.add(imageMovie2);
+//        moviePanel.add(imageMovie3);
+//        moviePanel.add(imageMovie4);
+//        moviePanel.add(imageMovie5);
         c.gridx = 2;
         c.gridy = 4;
 
@@ -202,6 +234,7 @@ public class HomePageTest extends JFrame {
         jLabel2.setForeground(Color.WHITE);
         c.gridx = 2;
         c.gridy = 5;
+
         panel.add(jLabel2, c);
         //Sixth Row of homepage
         //Sixth Row

@@ -2,20 +2,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AdminAddEditMovies extends JFrame {
     private JTextField titleField;
     private JTextField releaseYearField;
     private JTextField directorField;
     private JTextField genreField;
+    private JButton updateButton;
     private JTextArea plotSummaryArea;
     private JButton addButton;
     private List<Movies> moviesList;
     private JTextField priceField;
     private Movies movie;
+    private JTextField imagePathField;
+    // Label to display the movie image
+
 
     private JComboBox<Integer> movieSelector; // Dropdown selector for movies
 
@@ -51,6 +58,10 @@ public class AdminAddEditMovies extends JFrame {
         return moviesList;
     }
 
+    private String getImagePath() {
+        return imagePathField.getText();
+    }
+
     public int getNextId() {
         return nextId;
     }
@@ -77,25 +88,8 @@ public class AdminAddEditMovies extends JFrame {
         gbc.gridy = 0;
         panel.add(movieSelector, gbc);
 
-        movieSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                // Retrieve the selected movie ID
-                int selectedMovieId = (Integer) movieSelector.getSelectedItem();
 
-                // Retrieve the movie details for the selected movie ID
-                Movies selectedMovie = getMovieById(selectedMovieId);
 
-                // Update the UI fields with the selected movie's details
-                if (selectedMovie != null) {
-                    titleField.setText(selectedMovie.getTitle());
-                    releaseYearField.setText(String.valueOf(selectedMovie.getReleaseYear()));
-                    directorField.setText(selectedMovie.getDirector());
-                    genreField.setText(selectedMovie.getGenre());
-                    plotSummaryArea.setText(selectedMovie.getPlotSummary());
-                    // priceField.setText(String.valueOf(selectedMovie.getPrice()));
-                }
-            }
-        });
 
 
 
@@ -155,16 +149,69 @@ public class AdminAddEditMovies extends JFrame {
         gbc.gridy = 5;
         panel.add(priceField, gbc);
 
-        addButton = new JButton("Add");
+
+        JLabel imagePathLabel = new JLabel("Image Path:");
         gbc.gridx = 0;
         gbc.gridy = 6;
+        panel.add(imagePathLabel, gbc);
+
+        imagePathField = new JTextField(20);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        panel.add(imagePathField, gbc);
+
+        addButton = new JButton("Add");
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
         panel.add(addButton, gbc);
+
+
+        updateButton = new JButton("Update");
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+
+        panel.add(updateButton, gbc);
+
+        updateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                // Get the selected movie ID from the movieSelector dropdown
+                int selectedMovieId = (int) movieSelector.getSelectedItem();
+
+                // Retrieve the movie details based on the selected ID from the database
+                movie = getMovieById(selectedMovieId);
+
+                // Retrieve the movie details from the UI components
+                String title = titleField.getText();
+                int releaseYear = Integer.parseInt(releaseYearField.getText());
+                String director = directorField.getText();
+                String genre = genreField.getText();
+                String plotSummary = plotSummaryArea.getText();
+                double price = Double.parseDouble(priceField.getText());
+                String url = imagePathField.getText();
+
+                // Update the movie object with the new details
+                movie.setTitle(title);
+                movie.setReleaseYear(releaseYear);
+                movie.setDirector(director);
+                movie.setGenre(genre);
+                movie.setPlotSummary(plotSummary);
+                movie.setPrice(String.valueOf(price));
+                movie.setUrlImage(url);
+
+                // Update the movie in the database
+                movie.updateMovie();
+
+                // Clear the input fields after updating the movie
+                clearFields();
+            }
+        });
+
+
 
         editButton = new JButton("Edit");
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 9;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(editButton, gbc);
@@ -182,7 +229,7 @@ public class AdminAddEditMovies extends JFrame {
         });
 
 
-        movie = new Movies(0, "", 0, "", "", 0, "");
+        movie = new Movies(0, "", 0, "", "", 0, "", "");
         // Set initial values for the movie object
         movie.setUrlImage("");
 
@@ -191,11 +238,24 @@ public class AdminAddEditMovies extends JFrame {
             public void actionPerformed(ActionEvent evt) {
                 // Retrieve the movie details from the UI components
                 String title = titleField.getText();
-                int releaseYear = Integer.parseInt(releaseYearField.getText());
+                String releaseYearString = releaseYearField.getText();
                 String director = directorField.getText();
                 String genre = genreField.getText();
                 String plotSummary = plotSummaryArea.getText();
-                double price = Double.parseDouble(priceField.getText());
+                String priceString = priceField.getText();
+                String url = imagePathField.getText();
+
+
+
+                if (title.isEmpty() || releaseYearString.isEmpty() || director.isEmpty() || genre.isEmpty()
+                        || plotSummary.isEmpty() || priceString.isEmpty() || url.isEmpty()) {
+                    JOptionPane.showMessageDialog(AdminAddEditMovies.this,
+                            "Fields cannot be empty", "Empty Fields", JOptionPane.ERROR_MESSAGE);
+                    return; // Exit the method without adding the movie
+                }
+
+                int releaseYear = Integer.parseInt(releaseYearString);
+                double price = Double.parseDouble(priceString);
 
                 // Check if the selected item in the JComboBox is equal to 0
                 if (movieSelector.getSelectedItem().equals(0)) {
@@ -207,7 +267,7 @@ public class AdminAddEditMovies extends JFrame {
                     }
 
                     // Create a new movie and add it to the database
-                    movie = new Movies(0, title, releaseYear, director, genre,price, plotSummary);
+                    movie = new Movies(0, title, releaseYear, director, genre,price, plotSummary, url);
                     // Add the movie to the database
                     movie.addMovie();
 
@@ -216,27 +276,14 @@ public class AdminAddEditMovies extends JFrame {
 
                     // Add the movie ID to the movieSelector dropdown
                     movieSelector.addItem(movie.getId());
+                    clearFields();
+
                 } else {
-                    // Get the selected movie ID from the movieSelector dropdown
-                    int selectedMovieId = (int) movieSelector.getSelectedItem();
 
-                    // Retrieve the movie details based on the selected ID from the database
-                    movie = getMovieById(selectedMovieId);
+                    JOptionPane.showMessageDialog(AdminAddEditMovies.this, "Selected needs to be 0 to add movie!");
+                    clearFields();
 
-                    // Update the movie object with the new details
-                    movie.setTitle(title);
-                    movie.setReleaseYear(releaseYear);
-                    movie.setDirector(director);
-                    movie.setGenre(genre);
-                    movie.setPlotSummary(plotSummary);
-                    movie.setPrice(String.valueOf(price));
-
-                    // Update the movie in the database
-                    movie.updateMovie();
                 }
-
-                // Clear the input fields after adding/updating the movie
-                clearFields();
             }
         });
 
@@ -265,7 +312,9 @@ public class AdminAddEditMovies extends JFrame {
         directorField.setText(movie.getDirector());
         genreField.setText(movie.getGenre());
         plotSummaryArea.setText(movie.getPlotSummary());
-        // priceField.setText(Double.toString(movie.getPrice()));
+        priceField.setText(String.valueOf(movie.getPrice()));
+        imagePathField.setText(movie.getUrlImage());
+
     }
 
     private Movies getMovieById(int movieId) {
@@ -298,9 +347,7 @@ public class AdminAddEditMovies extends JFrame {
                 String urlImage = resultSet.getString("url_image");
 
                 // Create a new Movies object with the retrieved details
-                Movies movie = new Movies(id, title, releaseYear, director, genre,price, plotSummary);
-                //  movie.setPrice(price);
-                movie.setUrlImage(urlImage);
+                Movies movie = new Movies(id, title, releaseYear, director, genre,price, plotSummary, urlImage);
 
                 this.movie = movie;
                 return movie;
@@ -357,6 +404,7 @@ public class AdminAddEditMovies extends JFrame {
             e.printStackTrace();
         }
     }
+
 
 
 

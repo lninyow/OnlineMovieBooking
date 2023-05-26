@@ -1,8 +1,8 @@
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Movies {
     private int id;
     private String title;
@@ -11,26 +11,27 @@ public class Movies {
     private String genre;
     private String plotSummary;
     private String urlImage;
-    private String price;
+    private double price;
 
 
 
-    public Movies(int id, String title, int releaseYear, String director, String genre, double price, String plotSummary) {
+    public Movies(int id, String title, int releaseYear, String director, String genre, double price, String plotSummary, String urlImage) {
         this.id = id;
         this.title = title;
         this.releaseYear = releaseYear;
         this.director = director;
         this.genre = genre;
-        this.price = String.valueOf(price);
+        this.price = price;
         this.plotSummary = plotSummary;
+        this.urlImage = urlImage;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
     public void setPrice(String price) {
-        this.price = price;
+        this.price = Double.parseDouble(price);
     }
 
     public int getId() {
@@ -99,7 +100,7 @@ public class Movies {
             statement.setString(3, director);
             statement.setString(4, genre);
             statement.setString(5, plotSummary);
-            statement.setString(6, price);
+            statement.setDouble(6, price);
             statement.setString(7, urlImage);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -122,7 +123,7 @@ public class Movies {
             statement.setString(3, director);
             statement.setString(4, genre);
             statement.setString(5, plotSummary);
-            statement.setDouble(6, Double.parseDouble(price));
+            statement.setDouble(6, price);
             statement.setString(7, urlImage);
             statement.setInt(8, id);
             int rowsAffected = statement.executeUpdate();
@@ -134,5 +135,29 @@ public class Movies {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static List<String> retrieveMoviePostersFromDatabase() {
+        List<String> moviePosters = new ArrayList<>();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
+            String query = "SELECT url_image FROM movie";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String urlImage = resultSet.getString("url_image");
+                moviePosters.add(urlImage);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return moviePosters;
     }
 }
