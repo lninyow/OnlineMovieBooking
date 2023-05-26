@@ -49,7 +49,7 @@ public class HomePageTest extends JFrame {
 
 
         mainPanel = createMainPanel();
-        blackWidowPanel = createBlackWidowDetails();
+        blackWidowPanel = createMovieDetails();
 
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
@@ -144,7 +144,7 @@ public class HomePageTest extends JFrame {
         JPanel newPane = new JPanel();
         newPane.setLayout(new BorderLayout());
         btnBookTicket = new JButton("Book");
-        ImageIcon icon = new ImageIcon("C://Users//Liden//Downloads//bookticket.png");
+        ImageIcon icon = new ImageIcon("D://Codes//OnlineMovieBooking//src//Images//bookticket.png");
         image = new JLabel(icon);
         c.gridx = 0;
         c.gridy = 4;
@@ -243,7 +243,9 @@ public class HomePageTest extends JFrame {
     }
 
 
-    private JPanel createBlackWidowDetails() {
+
+
+    private JPanel createMovieDetails() {
         JPanel blackWidowPanel = new JPanel(new GridBagLayout());
         GridBagConstraints bw = new GridBagConstraints();
         blackWidowPanel.setPreferredSize(new Dimension(1201, 706));
@@ -275,13 +277,13 @@ public class HomePageTest extends JFrame {
 
         JPanel movieDesc = new JPanel(new GridLayout(6, 0));
         movieDesc.setBackground(new Color(43, 43, 43));
-        JLabel title1 = new JLabel("Black Widow");
+        JLabel title1 = new JLabel("BLACKWINDOWS");
         title1.setFont(new Font("SansSerif", Font.BOLD, 32));
         title1.setForeground(Color.WHITE);
 
         movieDesc.add(title1);
 
-        JLabel bwdesc = new JLabel("2021 | 2h 13m | 16");
+        JLabel bwdesc = new JLabel("Test");
         bwdesc.setForeground(Color.WHITE);
         bwdesc.setFont(new Font("SansSerif", Font.BOLD, 12));
         movieDesc.add(bwdesc);
@@ -290,29 +292,24 @@ public class HomePageTest extends JFrame {
         flowPanel.setBackground(new Color(43, 43, 43));
         flowPanel.setPreferredSize(new Dimension(300, 200));
         JLabel plotsum1 = new JLabel();
-        plotsum1.setText("<html>Natasha Romanoff, aka Black Widow, confronts the darker parts of her ledger when a dangerous conspiracy with<br>" +
-                "ties to her past arises. Pursued by a force that will stop at nothing to bring her down, Natasha must deal with<br>" +
-                "her history as a spy, and the broken relationships left in her wake long before she became an Avenger.</html>");
+        plotsum1.setText("<html>" + "TEST" + "</html>");
         plotsum1.setForeground(Color.WHITE);
         plotsum1.setFont(new Font("SansSerif", Font.BOLD, 13));
         flowPanel.add(plotsum1);
 
         movieDesc.add(flowPanel);
 
+//        JLabel starring1 = new JLabel("Starring " + movie.getStarring());
+//        starring1.setFont(new Font("SansSerif", Font.BOLD, 14));
+//        starring1.setForeground(Color.WHITE);
+//        movieDesc.add(starring1);
 
-        JLabel starring1 = new JLabel("Starring Scarlett Johansson, Florence Pugh, David Harbour, Olga Kurylenko, Robert Downey Jr.");
-        starring1.setFont(new Font("SansSerif", Font.BOLD, 14));
-        starring1.setForeground(Color.WHITE);
-        movieDesc.add(starring1);
-
-
-        JLabel directed1 = new JLabel("Directed by Cate ShortLand");
+        JLabel directed1 = new JLabel("Directed by ");
         directed1.setForeground(Color.WHITE);
         directed1.setFont(new Font("SansSerif", Font.BOLD, 14));
         movieDesc.add(directed1);
 
-
-        JLabel genre1 = new JLabel("Genre Action, Superhero, Science fiction, Spy, Thriller");
+        JLabel genre1 = new JLabel("Genre ");
         genre1.setForeground(Color.WHITE);
         genre1.setFont(new Font("SansSerif", Font.BOLD, 14));
         movieDesc.add(genre1);
@@ -322,8 +319,8 @@ public class HomePageTest extends JFrame {
         bw.gridheight = 5;
         blackWidowPanel.add(movieDesc, bw);
 
-
         return blackWidowPanel;
     }
+
 
 }

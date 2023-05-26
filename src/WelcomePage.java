@@ -160,13 +160,22 @@ public class WelcomePage extends JFrame {
                     }
 
                     if (isLoggedIn) {
-                        // Perform actions for a successful login, such as navigating to the next page or showing a success message
-                        JOptionPane.showMessageDialog(null, "Login successful!");
-                        HomePageTest newHomepage = new HomePageTest();
-                        newHomepage.setVisible(true);
-                        setVisible(false);
+                        if (username.equals("admin") && password.equals("1234")) {
+                            JOptionPane.showMessageDialog(null, "Admin login successful!");
+                            // Perform actions for a successful admin login, such as navigating to the admin homepage
+                            // Replace the code below with the appropriate actions for your admin page
+                            AdminAddEditMovies adminHomePage = new AdminAddEditMovies();
+                            adminHomePage.setVisible(true);
+                            setVisible(false);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Login successful!");
+                            // Perform actions for a successful user login, such as navigating to the user homepage
+                            // Replace the code below with the appropriate actions for your user page
+                            HomePageTest newHomepage = new HomePageTest();
+                            newHomepage.setVisible(true);
+                            setVisible(false);
+                        }
                     } else {
-                        // Handle incorrect login credentials, such as displaying an error message
                         JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
                     }
                 }
@@ -178,11 +187,11 @@ public class WelcomePage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
-                char[] passwordchar = passwordField.getPassword(); //converts the passwordField to a char array
-                String password = new String(passwordchar); //sets the password into a new string from password char array
-                System.out.println(password);
+                char[] passwordChar = passwordField.getPassword();
+                String password = new String(passwordChar);
 
                 boolean isLoggedIn = false;
+
                 try {
                     isLoggedIn = login(username, password);
                 } catch (SQLException ex) {
@@ -190,13 +199,22 @@ public class WelcomePage extends JFrame {
                 }
 
                 if (isLoggedIn) {
-                    // Perform actions for a successful login, such as navigating to the next page or showing a success message
-                    JOptionPane.showMessageDialog(null, "Login successful!");
-                    HomePageTest newHomepage = new HomePageTest();
-                    newHomepage.setVisible(true);
-                    setVisible(false);
+                    if (username.equals("admin") && password.equals("1234")) {
+                        JOptionPane.showMessageDialog(null, "Admin login successful!");
+                        // Perform actions for a successful admin login, such as navigating to the admin homepage
+                        // Replace the code below with the appropriate actions for your admin page
+                        AdminAddEditMovies adminHomePage = new AdminAddEditMovies();
+                        adminHomePage.setVisible(true);
+                        setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Login successful!");
+                        // Perform actions for a successful user login, such as navigating to the user homepage
+                        // Replace the code below with the appropriate actions for your user page
+                        HomePageTest newHomepage = new HomePageTest();
+                        newHomepage.setVisible(true);
+                        setVisible(false);
+                    }
                 } else {
-                    // Handle incorrect login credentials, such as displaying an error message
                     JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
                 }
             }
@@ -257,6 +275,8 @@ public class WelcomePage extends JFrame {
             return false;
         }
     }
+
+
     }
 
 
