@@ -13,7 +13,7 @@ import java.sql.*;
 
 public class RegisterPage extends JFrame {
     boolean valid = true;
-    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db","username", "password");
 
     public RegisterPage() {
         // Set up the registration page
