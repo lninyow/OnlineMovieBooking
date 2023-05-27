@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../sqlite-jdbc-3.41.2.1.jar!/" />
+          <root url="jar://$USER_HOME$/sqlite-jdbc-3.41.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,16 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Extra Files/sqlite-jdbc-3.41.2.1.jar!/" />
+          <root url="jar://$USER_HOME$/Extra Files/sqlite-jdbc-3.41.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Documents/NetBeansProjects/jar_files/sqlite-jdbc-3.20.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

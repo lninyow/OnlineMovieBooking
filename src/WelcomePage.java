@@ -22,7 +22,7 @@ public class WelcomePage extends JFrame {
     private JLabel noAccountLabel;
     private JLabel RegisterHereLabel;
 
-    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db","username", "password");
 
 
 
