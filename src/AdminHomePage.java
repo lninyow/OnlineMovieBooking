@@ -19,6 +19,8 @@ public class AdminHomePage extends JFrame {
     private javax.swing.JButton RemoveMovies;
     private javax.swing.JButton Seats;
     private javax.swing.JButton Snacks;
+    private javax.swing.JButton EditTheater;
+
 
     public AdminHomePage() {
         initComponents();
@@ -34,6 +36,7 @@ public class AdminHomePage extends JFrame {
         Snacks = new javax.swing.JButton();
         RemoveMovies = new javax.swing.JButton();
         Logout = new javax.swing.JLabel();
+        EditTheater = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -79,6 +82,24 @@ public class AdminHomePage extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 AdminAddEditMall newAdminAddEdit = new AdminAddEditMall();
+                newAdminAddEdit.setVisible(true);
+            }
+        });
+
+        EditTheater.setBackground(new java.awt.Color(204, 0, 0));
+        EditTheater.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
+        EditTheater.setForeground(new java.awt.Color(255, 255, 255));
+        EditTheater.setText("Add / Edit Theater"); // Button text for Add/Edit Theater
+        EditTheater.setBorder(null);
+        AdminPanel.add(EditTheater);
+        EditTheater.setBounds(150, 260, 130, 40);
+
+        EditTheater.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Perform Add/Edit Theater actions here
+                // For example, open a new dialog or frame for adding/editing theater details
+                AdminAddEditTheater newAdminAddEdit = new AdminAddEditTheater();
                 newAdminAddEdit.setVisible(true);
             }
         });
