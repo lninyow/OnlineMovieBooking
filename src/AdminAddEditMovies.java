@@ -21,6 +21,8 @@ public class AdminAddEditMovies extends JFrame {
     private JTextField priceField;
     private Movies movie;
     private JTextField imagePathField;
+
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
     // Label to display the movie image
 
 
@@ -303,6 +305,7 @@ public class AdminAddEditMovies extends JFrame {
         genreField.setText("");
         plotSummaryArea.setText("");
         priceField.setText("");
+        imagePathField.setText("");
     }
 
     private void populateFieldsForEditing(Movies movie) {
@@ -324,7 +327,7 @@ public class AdminAddEditMovies extends JFrame {
 
         try {
             // Establish a database connection
-            connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
+            connection = dbMovieManager.getDatabaseConnection();
 
             // Prepare the SQL statement to retrieve the movie by ID
             String sql = "SELECT * FROM movie WHERE movie_id = ?";
@@ -380,7 +383,7 @@ public class AdminAddEditMovies extends JFrame {
         // Retrieve movie IDs from the database
         try {
             // Establish a database connection
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
+            Connection connection = dbMovieManager.getDatabaseConnection();
 
             // Create a statement
             Statement statement = connection.createStatement();

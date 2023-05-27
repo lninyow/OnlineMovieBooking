@@ -82,10 +82,6 @@ public class HomePageTest extends JFrame {
         c.gridy = 0;
         panel.add(jLabel1, c);
 
-        tfSearch = new JTextField(20);
-        c.gridx = 1;
-        c.gridy = 0;
-        panel.add(tfSearch, c);
 
         btnPremiers = new JButton("Premiers");
         c.gridx = 2;
@@ -95,23 +91,18 @@ public class HomePageTest extends JFrame {
         btnComingSoon1 = new JButton("Coming Soon");
         c.gridx = 3;
         c.gridy = 0;
-
         panel.add(btnComingSoon1, c);
 
-        btnBookTickets = new JButton("Book Tickets");
-        c.gridx = 4;
-        c.gridy = 0;
-        panel.add(btnBookTickets, c);
-
         btnAboutUs1 = new JButton("About Us");
-        c.gridx = 5;
+        c.gridx = 4;
         c.gridy = 0;
         panel.add(btnAboutUs1, c);
 
         btnContactUs = new JButton("Contact Us");
-        c.gridx = 6;
+        c.gridx = 5;
         c.gridy = 0;
         panel.add(btnContactUs, c);
+
 
         //Second row of homepage
         // Second row
@@ -140,7 +131,7 @@ public class HomePageTest extends JFrame {
         jLabel4 = new JLabel("In Theaters");
         jLabel4.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
         jLabel4.setForeground(Color.WHITE);
-        c.gridx = 2;
+        c.gridx = 4;
         c.gridy = 3;
         panel.add(jLabel4, c);
 
@@ -149,7 +140,7 @@ public class HomePageTest extends JFrame {
         JPanel newPane = new JPanel();
         newPane.setLayout(new BorderLayout());
         btnBookTicket = new JButton("Book");
-        ImageIcon icon = new ImageIcon("D://Codes//OnlineMovieBooking//src//Images//bookticket.png");
+        ImageIcon icon = new ImageIcon("C:\\Users\\Liden\\Downloads\\bookticket.png");
         image = new JLabel(icon);
         c.gridx = 0;
         c.gridy = 4;
@@ -229,7 +220,7 @@ public class HomePageTest extends JFrame {
 //        moviePanel.add(imageMovie3);
 //        moviePanel.add(imageMovie4);
 //        moviePanel.add(imageMovie5);
-        c.gridx = 2;
+        c.gridx = 4;
         c.gridy = 4;
 
         panel.add(moviePanel, c);
@@ -240,7 +231,7 @@ public class HomePageTest extends JFrame {
         jLabel2 = new JLabel("Coming Soon");
         jLabel2.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set font size to 24
         jLabel2.setForeground(Color.WHITE);
-        c.gridx = 2;
+        c.gridx = 4;
         c.gridy = 5;
 
         panel.add(jLabel2, c);
@@ -275,7 +266,7 @@ public class HomePageTest extends JFrame {
         moviePanel1.add(imageComingSoon3);
         moviePanel1.add(imageComingSoon4);
         moviePanel1.add(imageComingSoon5);
-        c.gridx = 2;
+        c.gridx = 4;
         c.gridy = 6;
 
         panel.add(moviePanel1, c);
@@ -286,8 +277,10 @@ public class HomePageTest extends JFrame {
 
 
 
+    //createMovieDetails when you create a new poster, it creates a panel
     private JPanel createMovieDetails(String imageUrl) {
-        Movies movie = Movies.retrieveMovieDetailsFromDatabase(imageUrl);
+        Movies movies = new Movies();
+        Movies movie = movies.retrieveMovieDetailsFromDatabase(imageUrl);
 
         JPanel moviePanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -306,6 +299,7 @@ public class HomePageTest extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         moviePanel.add(backButton, gbc);
+
         try {
             // Create and set the movie poster
             URL url = new URL(imageUrl);
@@ -318,41 +312,73 @@ public class HomePageTest extends JFrame {
             gbc.gridheight = 5;
             gbc.gridwidth = 3;
             moviePanel.add(posterLabel, gbc);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        JPanel movieDescPanel = new JPanel(new GridLayout(6, 0));
+        JPanel movieDescPanel = new JPanel(new GridBagLayout());
         movieDescPanel.setBackground(new Color(43, 43, 43));
+
+        GridBagConstraints descLabelGbc = new GridBagConstraints();
+        descLabelGbc.anchor = GridBagConstraints.WEST;
+        descLabelGbc.insets = new Insets(5, 5, 5, 5);
+        descLabelGbc.gridx = 0;
+        descLabelGbc.gridy = 0;
 
         JLabel titleLabel = new JLabel(movie.getTitle());
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
         titleLabel.setForeground(Color.WHITE);
-        movieDescPanel.add(titleLabel);
+        movieDescPanel.add(titleLabel, descLabelGbc);
 
-        JLabel descLabel = new JLabel(movie.getPlotSummary());
-        descLabel.setForeground(Color.WHITE);
-        descLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
-        movieDescPanel.add(descLabel);
+        descLabelGbc.gridy++;
+        JLabel yearLabel = new JLabel("Release Year: " + movie.getReleaseYear());
+        yearLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        yearLabel.setForeground(Color.WHITE);
+        movieDescPanel.add(yearLabel, descLabelGbc);
 
+        descLabelGbc.gridy++;
+        descLabelGbc.fill = GridBagConstraints.HORIZONTAL;
+        descLabelGbc.weightx = 1.0;
+
+        JTextArea descTextArea = new JTextArea(movie.getPlotSummary());
+        descTextArea.setForeground(Color.WHITE);
+        descTextArea.setFont(new Font("SansSerif", Font.BOLD, 12));
+        descTextArea.setLineWrap(true);
+        descTextArea.setWrapStyleWord(true);
+        descTextArea.setBackground(new Color(43, 43, 43));
+        descTextArea.setEditable(false);
+
+            JScrollPane descScrollPane = new JScrollPane(descTextArea);
+            descScrollPane.setPreferredSize(new Dimension(400, 80));
+            descScrollPane.setBorder(BorderFactory.createEmptyBorder());
+            movieDescPanel.add(descScrollPane, descLabelGbc);
+
+
+        descLabelGbc.weightx = 0.0;
+        descLabelGbc.gridy++;
         JLabel directedLabel = new JLabel("Directed by " + movie.getDirector());
         directedLabel.setForeground(Color.WHITE);
         directedLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
-        movieDescPanel.add(directedLabel);
+        movieDescPanel.add(directedLabel, descLabelGbc);
 
+        descLabelGbc.gridy++;
         JLabel genreLabel = new JLabel("Genre: " + movie.getGenre());
         genreLabel.setForeground(Color.WHITE);
         genreLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
-        movieDescPanel.add(genreLabel);
+        movieDescPanel.add(genreLabel, descLabelGbc);
 
-        gbc.gridx = 4;
+        gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.gridheight = 5;
+        gbc.gridwidth = 4;
         moviePanel.add(movieDescPanel, gbc);
 
         return moviePanel;
     }
 
+
+
+    //poster click goes to movie details
     private void handleMovieImageClick(String imageUrl) {
         // Create a new movie details panel for the clicked movie
         JPanel movieDetailsPanel = createMovieDetails(imageUrl);

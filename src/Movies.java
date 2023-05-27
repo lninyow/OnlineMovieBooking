@@ -26,6 +26,10 @@ public class Movies {
         this.urlImage = urlImage;
     }
 
+    public Movies() {
+
+    }
+
     public double getPrice() {
         return price;
     }
@@ -163,7 +167,7 @@ public class Movies {
 
 
 
-    public static Movies retrieveMovieDetailsFromDatabase(String imageUrl) {
+    public  Movies retrieveMovieDetailsFromDatabase(String imageUrl) {
         Movies movie = null;
 
         try {
