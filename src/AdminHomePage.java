@@ -16,7 +16,7 @@ public class AdminHomePage extends JFrame {
     private javax.swing.JButton EditMovies1;
     private javax.swing.JButton EditMall;
     private javax.swing.JLabel Logout;
-    private javax.swing.JButton RemoveMovies;
+    private javax.swing.JButton editDateTime;
     private javax.swing.JButton Seats;
     private javax.swing.JButton Snacks;
     private javax.swing.JButton EditTheater;
@@ -24,6 +24,7 @@ public class AdminHomePage extends JFrame {
 
     public AdminHomePage() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     private void initComponents() {
@@ -34,7 +35,7 @@ public class AdminHomePage extends JFrame {
         EditMall = new javax.swing.JButton();
         Seats = new javax.swing.JButton();
         Snacks = new javax.swing.JButton();
-        RemoveMovies = new javax.swing.JButton();
+        editDateTime = new javax.swing.JButton();
         Logout = new javax.swing.JLabel();
         EditTheater = new javax.swing.JButton();
 
@@ -120,13 +121,22 @@ public class AdminHomePage extends JFrame {
         AdminPanel.add(Snacks);
         Snacks.setBounds(650, 200, 130, 40);
 
-        RemoveMovies.setBackground(new java.awt.Color(204, 0, 0));
-        RemoveMovies.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
-        RemoveMovies.setForeground(new java.awt.Color(255, 255, 255));
-        RemoveMovies.setText("Remove Movies");
-        RemoveMovies.setBorder(null);
-        AdminPanel.add(RemoveMovies);
-        RemoveMovies.setBounds(290, 260, 130, 40);
+        editDateTime.setBackground(new java.awt.Color(204, 0, 0));
+        editDateTime.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
+        editDateTime.setForeground(new java.awt.Color(255, 255, 255));
+        editDateTime.setText("Add/Edit Movie Showtime");
+        editDateTime.setBorder(null);
+        AdminPanel.add(editDateTime);
+        editDateTime.setBounds(290, 260, 130, 40);
+
+        editDateTime.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AdminAddEditShowtime newShowtimePanel = new AdminAddEditShowtime();
+                newShowtimePanel.setSize(300,300);
+                newShowtimePanel.setVisible(true);
+            }
+        });
 
         javax.swing.JButton Logout = new javax.swing.JButton(new javax.swing.ImageIcon("C:/Users/Liden/Desktop/logouticon.png"));
 
