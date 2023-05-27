@@ -112,6 +112,14 @@ public class AdminHomePage extends JFrame {
         Seats.setBorder(null);
         AdminPanel.add(Seats);
         Seats.setBounds(500, 200, 130, 40);
+        Seats.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AdminAddEditSeats newAddSeats = new AdminAddEditSeats();
+                newAddSeats.setVisible(true);
+                newAddSeats.setSize(300,300);
+            }
+        });
 
         Snacks.setBackground(new java.awt.Color(204, 0, 0));
         Snacks.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
