@@ -1,29 +1,33 @@
-import java.awt.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.util.Vector;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class SelectMoviePage extends JFrame {
-    private static final String SERIF_FONT = "Serif";
-    private static final String ARIAL_FONT = "Arial";
-    private static final String CINEMA_GO = "CinemaGo";
-    private static final String DATABASE_URL = "jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db";
-
-    private MovieDatabaseManager movieDbManager;
-    private MovieManager movieManager;
+    private JLabel moviePictureLabel;
 
     public SelectMoviePage() {
-        movieDbManager = new MovieDatabaseManager(DATABASE_URL, "", "");
-        movieManager = new MovieManager(movieDbManager);
-
-        setTitle(CINEMA_GO);
+        setTitle("CinemaGo");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1920, 1080));
         setResizable(false);
+        initializeUI();
+    }
+
+    private void initializeUI() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10);
+        c.anchor = GridBagConstraints.NORTHWEST;
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.DARK_GRAY);
 
-        addComponentsToMainPanel(mainPanel);
+        mainPanel.add(createHeaderComponents(c), BorderLayout.NORTH);
+        mainPanel.add(createContentComponents(c), BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
         pack();
@@ -31,114 +35,102 @@ public class SelectMoviePage extends JFrame {
         setVisible(true);
     }
 
-    private void addComponentsToMainPanel(JPanel mainPanel) {
-        GridBagConstraints c = setupGridBagLayout();
-
+    private JPanel createHeaderComponents(GridBagConstraints c) {
         JPanel northPanel = new JPanel(new GridBagLayout());
         northPanel.setBackground(Color.DARK_GRAY);
-        addHeaderComponents(northPanel, c);
-        addBookingComponents(northPanel, c);
 
-        mainPanel.add(northPanel, BorderLayout.NORTH);
-
-        addContentComponents(mainPanel, c);
-    }
-
-    private GridBagConstraints setupGridBagLayout() {
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 10, 10, 10);
-        c.anchor = GridBagConstraints.NORTH;
-        return c;
-    }
-
-    private void addHeaderComponents(JPanel mainPanel, GridBagConstraints c) {
-        JLabel cinemaGoLabel = new JLabel(CINEMA_GO);
-        setupLabelProperties(cinemaGoLabel, ARIAL_FONT, 24, Color.WHITE);
-        mainPanel.add(cinemaGoLabel, c);
-
-        JLabel searchLabel = new JLabel("Search for a movie: ");
-        setupLabelProperties(searchLabel, ARIAL_FONT, 24, Color.WHITE);
-        mainPanel.add(searchLabel, c);
-
-        JTextField searchField = new JTextField(20);
-        mainPanel.add(searchField, c);
-
-        addButtonGroup(mainPanel, c, "Premiers", "Coming Soon", "Book Tickets", "About Us", "Contact Us");
-    }
-
-    private void addBookingComponents(JPanel mainPanel, GridBagConstraints c) {
-        String[] bookingButtonNames = {"Book Tickets", "Select a Location", "Select a Cinema", "Select a Date and Time", "Select a Seat", "Select Food or Drinks"};
-        JPanel bookingPanel = new JPanel(new GridLayout(1, bookingButtonNames.length));
-        bookingPanel.setBackground(Color.DARK_GRAY);
-        for (String name : bookingButtonNames) {
-            JButton button = new JButton(name);
-            button.setBackground(Color.LIGHT_GRAY);
-            bookingPanel.add(button);
-        }
         c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 8;
-        mainPanel.add(bookingPanel, c);
+        c.gridy = 0;
+        northPanel.add(Box.createHorizontalGlue()); // Add horizontal glue to center the components
+
+        addButtonGroup(northPanel, c, "Book Tickets", "Select a Location", "Select a Cinema", "Select a Date and Time", "Select a Seat", "Select Food or Drinks");
+
+        return northPanel;
     }
 
-    private void addContentComponents(JPanel mainPanel, GridBagConstraints c) {
+    private JPanel createContentComponents(GridBagConstraints c) {
         JPanel contentPanel = new JPanel(new GridBagLayout());
         contentPanel.setBackground(Color.WHITE);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        JLabel titleLabel = new JLabel("Select Movie");
-        titleLabel.setFont(new Font(SERIF_FONT, Font.BOLD, 24));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        contentPanel.add(titleLabel, c);
+        c.gridx = 0;
+        c.gridy = 0;
+        contentPanel.add(createLabel("Select Movie", "Serif", 24, Color.BLACK), c);
 
-        // Fetch available movies
-        Vector<String> movieList = movieManager.getMovieTitles();
+        List<Movies.MovieData> movieDataList = Movies.retrieveMovieDataFromDatabase();
+        JComboBox<Movies.MovieData> movieComboBox = createMovieComboBox(contentPanel, c, movieDataList);
 
-        // Create a JComboBox for movie selection and add it to the contentPanel
-        JComboBox<String> movieComboBox = createMovieComboBox(contentPanel, c, movieList);
+        c.gridx = 1;
+        moviePictureLabel = new JLabel();
+        contentPanel.add(moviePictureLabel, c);
 
-        // Create a next button and add it to the contentPanel
-        JButton nextButton = createNextButton(contentPanel, c);
+        c.gridy = 2;
+        c.gridx = 0; // Center the button
+        c.gridwidth = 2; // Span the button across two columns
+        JButton nextButton = new JButton("Next");
+        nextButton.setBackground(Color.LIGHT_GRAY);
+        contentPanel.add(nextButton, c);
 
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        return contentPanel;
     }
 
-    private JComboBox<String> createMovieComboBox(JPanel contentPanel, GridBagConstraints c, Vector<String> movieList) {
-        JComboBox<String> movieComboBox = new JComboBox<>(movieList);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 1;
-        c.anchor = GridBagConstraints.CENTER;
+    private JLabel createLabel(String text, String fontName, int fontSize, Color color) {
+        JLabel label = new JLabel(text);
+        label.setForeground(color);
+        label.setFont(new Font(fontName, Font.BOLD, fontSize));
+        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        return label;
+    }
+
+    private JComboBox<Movies.MovieData> createMovieComboBox(JPanel contentPanel, GridBagConstraints c, List<Movies.MovieData> movieDataList) {
+        JComboBox<Movies.MovieData> movieComboBox = new JComboBox<>(movieDataList.toArray(new Movies.MovieData[0]));
+        movieComboBox.setRenderer(new MovieComboBoxRenderer());
+        movieComboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Movies.MovieData selectedMovieData = (Movies.MovieData) movieComboBox.getSelectedItem();
+                Movies selectedMovie = new Movies().retrieveMovieDetailsFromDatabase(selectedMovieData.getUrlImage());
+                if (selectedMovie != null) {
+                    updateMoviePicture(selectedMovieData.getUrlImage());
+                } else {
+                    System.out.println("Movie details not found for: " + selectedMovieData.getUrlImage());
+                    moviePictureLabel.setIcon(null);
+                }
+            }
+        });
+        c.gridy = 1;
         contentPanel.add(movieComboBox, c);
         return movieComboBox;
     }
 
-    private JButton createNextButton(JPanel contentPanel, GridBagConstraints c) {
-        JButton nextButton = new JButton("Next");
-        nextButton.setFont(new Font(SERIF_FONT, Font.BOLD, 18));
-        nextButton.setMargin(new Insets(10, 20, 10, 20));
-        c.gridx = 2;
-        c.gridy = 3;
-        c.anchor = GridBagConstraints.EAST;
-        contentPanel.add(nextButton, c);
-        return nextButton;
+    private void updateMoviePicture(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            BufferedImage image = ImageIO.read(url);
+            ImageIcon imageIcon = new ImageIcon(image.getScaledInstance(300, 300, Image.SCALE_DEFAULT));
+            moviePictureLabel.setIcon(imageIcon);
+        } catch (IOException e) {
+            System.out.println("There was an error reading the image from: " + imageUrl);
+            e.printStackTrace();
+        }
     }
 
     private void addButtonGroup(JPanel panel, GridBagConstraints c, String... buttonNames) {
         for (int i = 0; i < buttonNames.length; i++) {
             JButton button = new JButton(buttonNames[i]);
             button.setBackground(Color.LIGHT_GRAY);
-            c.gridx = i + 3;
+            c.gridx = i + 1; // Adjust the grid position
             c.gridy = 0;
-            c.gridwidth = 1;
             panel.add(button, c);
         }
     }
 
-    private void setupLabelProperties(JLabel label, String fontName, int fontSize, Color color) {
-        label.setForeground(color);
-        label.setFont(new Font(fontName, Font.BOLD, fontSize));
-        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    private static class MovieComboBoxRenderer extends DefaultListCellRenderer {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            if (value instanceof Movies.MovieData) {
+                value = ((Movies.MovieData) value).getTitle();
+            }
+            return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        }
     }
 
     public static void main(String[] args) {
