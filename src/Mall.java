@@ -3,6 +3,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 public class Mall {
     private int mallId;
+    //test
     private String mallName;
     private String location;
     MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
