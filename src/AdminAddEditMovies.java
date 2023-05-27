@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +68,7 @@ public class AdminAddEditMovies extends JFrame {
 
     public AdminAddEditMovies() {
         setTitle("Add Movie");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         moviesList = new ArrayList<>();
         nextId = 1; // Initialize the next ID as 1
 
