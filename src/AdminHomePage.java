@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 /**
  *
- * @author SALAD
+ * author SALAD
  */
 public class AdminHomePage extends JFrame {
 
@@ -45,14 +45,6 @@ public class AdminHomePage extends JFrame {
         AdminPanel.setBackground(new java.awt.Color(25, 25, 25));
         AdminPanel.setLayout(null);
 
-        Cinema.setBackground(new java.awt.Color(204, 0, 0));
-        Cinema.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
-        Cinema.setForeground(new java.awt.Color(255, 255, 255));
-        Cinema.setText("Add Cinema");
-        Cinema.setBorder(null);
-        AdminPanel.add(Cinema);
-        Cinema.setBounds(460, 260, 130, 40);
-
         EditMovies1.setBackground(new java.awt.Color(204, 0, 0));
         EditMovies1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
         EditMovies1.setForeground(new java.awt.Color(255, 255, 255));
@@ -68,7 +60,6 @@ public class AdminHomePage extends JFrame {
                 newAdminEdit.setVisible(true);
             }
         });
-
 
         EditMall.setBackground(new java.awt.Color(204, 0, 0));
         EditMall.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
@@ -90,16 +81,14 @@ public class AdminHomePage extends JFrame {
         EditTheater.setBackground(new java.awt.Color(204, 0, 0));
         EditTheater.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
         EditTheater.setForeground(new java.awt.Color(255, 255, 255));
-        EditTheater.setText("Add / Edit Theater"); // Button text for Add/Edit Theater
+        EditTheater.setText("Add / Edit Theater");
         EditTheater.setBorder(null);
         AdminPanel.add(EditTheater);
-        EditTheater.setBounds(150, 260, 130, 40);
+        EditTheater.setBounds(210, 260, 130, 40);
 
         EditTheater.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Perform Add/Edit Theater actions here
-                // For example, open a new dialog or frame for adding/editing theater details
                 AdminAddEditTheater newAdminAddEdit = new AdminAddEditTheater();
                 newAdminAddEdit.setVisible(true);
             }
@@ -111,13 +100,30 @@ public class AdminHomePage extends JFrame {
         Seats.setText("Update Seats");
         Seats.setBorder(null);
         AdminPanel.add(Seats);
-        Seats.setBounds(500, 200, 130, 40);
+        Seats.setBounds(490, 200, 130, 40);
         Seats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AdminAddEditSeats newAddSeats = new AdminAddEditSeats();
                 newAddSeats.setVisible(true);
-                newAddSeats.setSize(300,300);
+                newAddSeats.setSize(300, 300);
+            }
+        });
+
+        editDateTime.setBackground(new java.awt.Color(204, 0, 0));
+        editDateTime.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
+        editDateTime.setForeground(new java.awt.Color(255, 255, 255));
+        editDateTime.setText("Add/Edit Movie Showtime");
+        editDateTime.setBorder(null);
+        AdminPanel.add(editDateTime);
+        editDateTime.setBounds(350, 260, 200, 40);
+
+        editDateTime.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AdminAddEditShowtime newShowtimePanel = new AdminAddEditShowtime();
+                newShowtimePanel.setSize(300, 300);
+                newShowtimePanel.setVisible(true);
             }
         });
 
@@ -127,39 +133,27 @@ public class AdminHomePage extends JFrame {
         Snacks.setText("Add Snacks");
         Snacks.setBorder(null);
         AdminPanel.add(Snacks);
-        Snacks.setBounds(650, 200, 130, 40);
-
-        editDateTime.setBackground(new java.awt.Color(204, 0, 0));
-        editDateTime.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14));
-        editDateTime.setForeground(new java.awt.Color(255, 255, 255));
-        editDateTime.setText("Add/Edit Movie Showtime");
-        editDateTime.setBorder(null);
-        AdminPanel.add(editDateTime);
-        editDateTime.setBounds(290, 260, 130, 40);
-
-        editDateTime.addActionListener(new ActionListener() {
+        Snacks.setBounds(560, 260, 130, 40);
+        Snacks.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AdminAddEditShowtime newShowtimePanel = new AdminAddEditShowtime();
-                newShowtimePanel.setSize(300,300);
-                newShowtimePanel.setVisible(true);
+                AdminAddEditFoodDrinks newSnacks = new AdminAddEditFoodDrinks();
+                newSnacks.setSize(500, 300);
+                newSnacks.setVisible(true);
             }
         });
 
         javax.swing.JButton Logout = new javax.swing.JButton(new javax.swing.ImageIcon("C:/Users/Liden/Desktop/logouticon.png"));
 
-// Set properties for the Logout button
+        // Set properties for the Logout button
         Logout.setBorder(null);
         Logout.setContentAreaFilled(false);
         Logout.setFocusPainted(false);
         Logout.setBounds(800, 20, 50, 50);
 
-
         Logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Perform logout actions here
-                // For example, dispose the current frame and show the login frame
                 dispose();
                 WelcomePage loginFrame = new WelcomePage();
                 loginFrame.setVisible(true);
@@ -182,7 +176,6 @@ public class AdminHomePage extends JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(AdminPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE))
         );
-
 
         pack();
     }

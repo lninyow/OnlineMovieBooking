@@ -1,3 +1,4 @@
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,10 @@ public class Movies {
     private String urlImage;
     private double price;
 
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
+    private Connection connection;
+
+
     public Movies(int id, String title, int releaseYear, String director, String genre, double price, String plotSummary, String urlImage) {
         this.id = id;
         this.title = title;
@@ -22,8 +27,6 @@ public class Movies {
         this.plotSummary = plotSummary;
         this.urlImage = urlImage;
     }
-
-    // Getters and setters
 
     public Movies() {
 
@@ -113,7 +116,7 @@ public class Movies {
 
     public void addMovie() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "username", "password");
+            connection = dbMovieManager.getDatabaseConnection();
             String query = "INSERT INTO movie (title, release_year, director, genre, plot_summary, price,  url_image) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
@@ -136,7 +139,7 @@ public class Movies {
 
     public void updateMovie() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "username", "password");
+            connection = dbMovieManager.getDatabaseConnection();
             String query = "UPDATE movie SET title = ?, release_year = ?, director = ?, genre = ?, plot_summary = ?, price =?, url_image = ? WHERE movie_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
@@ -158,11 +161,12 @@ public class Movies {
         }
     }
 
+
     public static List<String> retrieveMoviePostersFromDatabase() {
         List<String> moviePosters = new ArrayList<>();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "username", "password");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
             String query = "SELECT url_image FROM movie";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -181,11 +185,13 @@ public class Movies {
         return moviePosters;
     }
 
-    public Movies retrieveMovieDetailsFromDatabase(String imageUrl) {
+
+
+    public  Movies retrieveMovieDetailsFromDatabase(String imageUrl) {
         Movies movie = null;
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "username", "password");
+            connection = dbMovieManager.getDatabaseConnection();
             String query = "SELECT * FROM movie WHERE url_image = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, imageUrl);
@@ -214,11 +220,36 @@ public class Movies {
         return movie;
     }
 
-    public static List<MovieData> retrieveMovieDataFromDatabase() {
+    private int getMovieId(String movieTitle) throws SQLException {
+        String sql = "SELECT movie_id FROM movie WHERE title = ?";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, movieTitle);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("movie_id");
+            }
+
+            return -1;
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        }
+    }
+
+    public static List<MovieData> retrieveMovieDataFromDatabase1() {
         List<MovieData> movieDataList = new ArrayList<>();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "username", "password");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
             String query = "SELECT * FROM movie";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -246,4 +277,8 @@ public class Movies {
 
         return movieDataList;
     }
+
+
 }
+
+

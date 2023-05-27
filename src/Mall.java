@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 public class Mall {
     private int mallId;
@@ -16,10 +17,12 @@ public class Mall {
         this.location = location;
     }
 
-    // Getters and setters
-    public int getMallId() {
-        return mallId;
+    public Mall() {
+
     }
+
+    // Getters and setters
+
 
     public void setMallId(int mallId) {
         this.mallId = mallId;
@@ -84,4 +87,31 @@ public class Mall {
     }
 
 
+
+    public int getMallId(String mallName) throws SQLException {
+        String sql = "SELECT mall_id FROM mall WHERE mall_name = ?";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Establish a new database connection
+            Connection connection = dbMovieManager.getDatabaseConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, mallName);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("mall_id");
+            }
+
+            return -1;
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        }
+    }
 }

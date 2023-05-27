@@ -53,7 +53,7 @@ public class SelectMoviePage extends JPanel {
         c.gridy = 0;
         contentPanel.add(createLabel("Select Movie", "Serif", 24, Color.BLACK), c);
 
-        List<Movies.MovieData> movieDataList = Movies.retrieveMovieDataFromDatabase();
+        List<Movies.MovieData> movieDataList = Movies.retrieveMovieDataFromDatabase1();
         JComboBox<Movies.MovieData> movieComboBox = createMovieComboBox(contentPanel, c, movieDataList);
 
         c.gridx = 1;

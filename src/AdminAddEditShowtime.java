@@ -122,9 +122,10 @@ public class AdminAddEditShowtime extends JFrame {
                 try {
                     // Establish a database connection
                     connection = dbMovieManager.getDatabaseConnection();
-
-                    int mallId = getMallId(selectedMall);
-                    int theaterId = getTheaterId(selectedTheater, mallId);
+                    Mall newMall = new Mall();
+                    int mallId = newMall.getMallId(selectedMall);
+                    Theater newTheater = new Theater();
+                    int theaterId = newTheater.getTheaterId(selectedTheater, mallId);
                     int movieId = getMovieId(selectedMovie);
 
                     if (mallId == -1) {
@@ -179,59 +180,59 @@ public class AdminAddEditShowtime extends JFrame {
 
 
     //gets the Mallid of the Selected mallName from the JComboBox of MallSelector
-    private int getMallId(String mallName) throws SQLException {
-        String sql = "SELECT mall_id FROM mall WHERE mall_name = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            // Establish a new database connection
-            Connection connection = dbMovieManager.getDatabaseConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, mallName);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getInt("mall_id");
-            }
-
-            return -1;
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-        }
-    }
+//    private int getMallId(String mallName) throws SQLException {
+//        String sql = "SELECT mall_id FROM mall WHERE mall_name = ?";
+//        PreparedStatement statement = null;
+//        ResultSet resultSet = null;
+//
+//        try {
+//            // Establish a new database connection
+//            Connection connection = dbMovieManager.getDatabaseConnection();
+//            statement = connection.prepareStatement(sql);
+//            statement.setString(1, mallName);
+//            resultSet = statement.executeQuery();
+//
+//            if (resultSet.next()) {
+//                return resultSet.getInt("mall_id");
+//            }
+//
+//            return -1;
+//        } finally {
+//            if (resultSet != null) {
+//                resultSet.close();
+//            }
+//            if (statement != null) {
+//                statement.close();
+//            }
+//        }
+//    }
 
     //gets the TheaterId which admin needs to pass the mallId(from getMallid) and theaterName from TheaterSelector of ComboBox
-    private int getTheaterId(String theaterName, int mallId) throws SQLException {
-        String sql = "SELECT theater_id FROM theater WHERE name = ? AND mall_id = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, theaterName);
-            statement.setInt(2, mallId);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getInt("theater_id");
-            }
-
-            return -1;
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-        }
-    }
+//    private int getTheaterId(String theaterName, int mallId) throws SQLException {
+//        String sql = "SELECT theater_id FROM theater WHERE name = ? AND mall_id = ?";
+//        PreparedStatement statement = null;
+//        ResultSet resultSet = null;
+//
+//        try {
+//            statement = connection.prepareStatement(sql);
+//            statement.setString(1, theaterName);
+//            statement.setInt(2, mallId);
+//            resultSet = statement.executeQuery();
+//
+//            if (resultSet.next()) {
+//                return resultSet.getInt("theater_id");
+//            }
+//
+//            return -1;
+//        } finally {
+//            if (resultSet != null) {
+//                resultSet.close();
+//            }
+//            if (statement != null) {
+//                statement.close();
+//            }
+//        }
+//    }
 
     //just gets the MovieId by the selected Selector from the JComboBox
     private int getMovieId(String movieTitle) throws SQLException {
@@ -340,7 +341,7 @@ public class AdminAddEditShowtime extends JFrame {
     }
 
 
-    //this will populate the TheaterSelector but you need to select a Mall first because this gets populated, because each Mall has different theaters
+    //this will populate the TheaterSelector but you need to select a Mall first so this gets populated, because each Mall has different theaters
     private void populateTheaterSelector(String selectedMall) {
         try {
             // Establish a database connection
@@ -349,7 +350,8 @@ public class AdminAddEditShowtime extends JFrame {
             // Retrieve theater names from the database based on the selected mall
             String sql = "SELECT name FROM theater WHERE mall_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            int mallId = getMallId(selectedMall);
+            Mall newMall = new Mall();
+            int mallId = newMall.getMallId(selectedMall);
             statement.setInt(1, mallId);
             ResultSet resultSet = statement.executeQuery();
 

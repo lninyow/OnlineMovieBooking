@@ -6,11 +6,10 @@ import java.awt.*;
 public class BookingPage extends JFrame {
     private JPanel cards;
     private CardLayout cardLayout;
-    private MovieDatabaseManager dbManager;
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
 
     public BookingPage() {
         // Initialize your MovieDatabaseManager with actual parameters
-        dbManager = new MovieDatabaseManager("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "", "");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1920, 1080);
         setLayout(new BorderLayout());
@@ -20,7 +19,7 @@ public class BookingPage extends JFrame {
         add(cards, BorderLayout.CENTER);
 
         SelectMoviePage panel1 = new SelectMoviePage();
-        SelectMallPage selectMallPage = new SelectMallPage(dbManager);
+        SelectMallPage selectMallPage = new SelectMallPage(dbMovieManager);
         JPanel panel3 = createPanel("Select a Cinema");
         JPanel panel4 = createPanel("Select a Date and Time");
         JPanel panel5 = createPanel("Select a Seat");

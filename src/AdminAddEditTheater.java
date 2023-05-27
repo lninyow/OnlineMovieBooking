@@ -110,9 +110,10 @@ public class AdminAddEditTheater extends JFrame {
                                 "Selected mall does not exist", "Invalid Mall", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
+                    Theater newTheater = new Theater(0,mallId,theaterName,0);
 
                     // Insert the theater into the database
-                    insertTheater(theaterName, mallId);
+                    newTheater.insertTheater(theaterName, mallId);
 
                     JOptionPane.showMessageDialog(AdminAddEditTheater.this,
                             "Theater added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -145,25 +146,25 @@ public class AdminAddEditTheater extends JFrame {
                 }
 
                 try {
-                    // Establish a database connection
-                    connection = dbMovieManager.getDatabaseConnection();
+                    // Create an instance of the Theater class
+                    Theater theater = new Theater();
 
-                    int mallId = getMallId(selectedMall);
+                    int mallId = theater.getMallId(selectedMall);
                     if (mallId == -1) {
                         JOptionPane.showMessageDialog(AdminAddEditTheater.this,
                                 "Selected mall does not exist", "Invalid Mall", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
 
-                    int theaterId = getTheaterId(selectedTheater, mallId);
+                    int theaterId = theater.getTheaterId(selectedTheater, mallId);
                     if (theaterId == -1) {
                         JOptionPane.showMessageDialog(AdminAddEditTheater.this,
                                 "Selected theater does not exist", "Invalid Theater", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
 
-                    // Delete the theater from the database
-                    deleteTheater(theaterId);
+                    // Call the deleteTheater method from the Theater class
+                    theater.deleteTheater(theaterId);
 
                     JOptionPane.showMessageDialog(AdminAddEditTheater.this,
                             "Theater deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -172,12 +173,10 @@ public class AdminAddEditTheater extends JFrame {
                     populateMallSelector();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } finally {
-                    // Close the database connection
-                    closeConnection();
                 }
-                }
+            }
         });
+
 
         add(panel);
 
@@ -216,24 +215,24 @@ public class AdminAddEditTheater extends JFrame {
 
 
 
-    private void insertTheater(String theaterName, int mallId) throws SQLException {
-        String sql = "INSERT INTO theater (name, mall_id) VALUES (?, ?)";
-        PreparedStatement statement = null;
-        try {
-            connection = dbMovieManager.getDatabaseConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, theaterName);
-            statement.setInt(2, mallId);
-            statement.executeUpdate();
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
+//    private void insertTheater(String theaterName, int mallId) throws SQLException {
+//        String sql = "INSERT INTO theater (name, mall_id) VALUES (?, ?)";
+//        PreparedStatement statement = null;
+//        try {
+//            connection = dbMovieManager.getDatabaseConnection();
+//            statement = connection.prepareStatement(sql);
+//            statement.setString(1, theaterName);
+//            statement.setInt(2, mallId);
+//            statement.executeUpdate();
+//        } finally {
+//            if (statement != null) {
+//                statement.close();
+//            }
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        }
+//    }
 
 
 
@@ -279,33 +278,6 @@ public class AdminAddEditTheater extends JFrame {
 
 
 
-    private int getTheaterId(String theaterName, int mallId) throws SQLException {
-        String sql = "SELECT theater_id FROM theater WHERE name = ? AND mall_id = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, theaterName);
-            statement.setInt(2, mallId);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getInt("theater_id");
-            }
-
-            return -1;
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-        }
-    }
-
-
     private void populateTheaterSelector(int mallId) {
         theaterSelector.removeAllItems(); // Clear the existing items in the theater selector
 
@@ -340,23 +312,48 @@ public class AdminAddEditTheater extends JFrame {
         }
     }
 
-    private void deleteTheater(int theaterId) throws SQLException {
-        String sql = "DELETE FROM theater WHERE theater_id = ?";
-        PreparedStatement statement = null;
-        try {
-            connection = dbMovieManager.getDatabaseConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, theaterId);
-            statement.executeUpdate();
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
+//    private void deleteTheater(int theaterId) throws SQLException {
+//        String deleteTheaterSql = "DELETE FROM theater WHERE theater_id = ?";
+//        String deleteShowtimeSql = "DELETE FROM showtime WHERE theater_id = ?";
+//        PreparedStatement theaterStatement = null;
+//        PreparedStatement showtimeStatement = null;
+//
+//        try {
+//            connection = dbMovieManager.getDatabaseConnection();
+//            connection.setAutoCommit(false);
+//
+//            // Delete showtimes associated with the theater
+//            showtimeStatement = connection.prepareStatement(deleteShowtimeSql);
+//            showtimeStatement.setInt(1, theaterId);
+//            showtimeStatement.executeUpdate();
+//
+//            // Delete the theater
+//            theaterStatement = connection.prepareStatement(deleteTheaterSql);
+//            theaterStatement.setInt(1, theaterId);
+//            theaterStatement.executeUpdate();
+//
+//            // Commit the transaction
+//            connection.commit();
+//        } catch (SQLException e) {
+//            // Rollback the transaction in case of an exception
+//            if (connection != null) {
+//                connection.rollback();
+//            }
+//            e.printStackTrace();
+//        } finally {
+//            // Close the statements and connection
+//            if (showtimeStatement != null) {
+//                showtimeStatement.close();
+//            }
+//            if (theaterStatement != null) {
+//                theaterStatement.close();
+//            }
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        }
+//    }
+
 
     private void closeConnection() {
         try {

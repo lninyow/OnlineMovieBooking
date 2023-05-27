@@ -150,7 +150,6 @@ public class WelcomePage extends JFrame {
                     String username = usernameField.getText();
                     char[] passwordchar = passwordField.getPassword(); //converts the passwordField to a char array
                     String password = new String(passwordchar); //sets the password into a new string from password char array
-                    System.out.println(password);
 
                     boolean isLoggedIn = false;
                     try {

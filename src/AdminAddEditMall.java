@@ -65,10 +65,22 @@ public class AdminAddEditMall extends JFrame {
         gbc.gridy = 0;
         panel.add(mallSelector, gbc);
 
+        mallSelector.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                int selectedMallId = (int) mallSelector.getSelectedItem();
+                Mall mall = getMallById(selectedMallId);
+                if (mall != null) {
+                    populateFieldsForEditing(mall);
+                }
+            }
+        });
+
+
         mallNameField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 0;
         panel.add(mallNameField, gbc);
+
 
         JLabel locationLabel = new JLabel("Location:");
         gbc.gridx = 0;
@@ -211,7 +223,7 @@ public class AdminAddEditMall extends JFrame {
             // Check if a movie was found
             if (resultSet.next()) {
                 // Retrieve the movie details from the result set
-                int id = resultSet.getInt("movie_id");
+                int id = resultSet.getInt("mall_id");
                 String mallName = resultSet.getString("mall_name");
                 String location = resultSet.getString("location");
 
@@ -280,5 +292,15 @@ public class AdminAddEditMall extends JFrame {
             e.printStackTrace();
         }
     }
+
+    private void populateFieldsForEditing(Mall mall) {
+        // Set the mall details in the corresponding UI components
+        mallNameField.setText(mall.getMallName());
+        locationField.setText(mall.getLocation());
+    }
+
+
+
+
 
 }

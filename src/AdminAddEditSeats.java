@@ -97,9 +97,10 @@ public class AdminAddEditSeats extends JFrame {
                 try {
                     // Establish a database connection
                     connection = dbMovieManager.getDatabaseConnection();
-
-                    int mallId = getMallId(selectedMall);
-                    int theaterId = getTheaterId(selectedTheater, mallId);
+                    Mall newMall = new Mall();
+                    Theater newTheater = new Theater();
+                    int mallId = newMall.getMallId(selectedMall);
+                    int theaterId = newTheater.getTheaterId(selectedTheater, mallId);
 
                     if (mallId == -1) {
                         JOptionPane.showMessageDialog(AdminAddEditSeats.this,
@@ -112,8 +113,8 @@ public class AdminAddEditSeats extends JFrame {
                                 "Selected theater does not exist", "Invalid Theater", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-
-                    assignSeats(theaterId, totalSeats, numRows, seatsPerRow);
+                    Seat newSeat = new Seat(0,theaterId,numRows);
+                    newSeat.assignSeats(theaterId, totalSeats, numRows, seatsPerRow);
 
                     JOptionPane.showMessageDialog(AdminAddEditSeats.this,
                             "Seats assigned successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -143,59 +144,10 @@ public class AdminAddEditSeats extends JFrame {
     }
 
 
-    private int getMallId(String mallName) throws SQLException {
-        String sql = "SELECT mall_id FROM mall WHERE mall_name = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            // Establish a new database connection
-            Connection connection = dbMovieManager.getDatabaseConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, mallName);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getInt("mall_id");
-            }
-
-            return -1;
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-        }
-    }
 
 
-    private int getTheaterId(String theaterName, int mallId) throws SQLException {
-        String sql = "SELECT theater_id FROM theater WHERE name = ? AND mall_id = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, theaterName);
-            statement.setInt(2, mallId);
-            resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                return resultSet.getInt("theater_id");
-            }
-
-            return -1;
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-        }
-    }
 
 
     private void populateMallSelector() {
@@ -237,11 +189,11 @@ public class AdminAddEditSeats extends JFrame {
         try {
             // Establish a database connection
             connection = dbMovieManager.getDatabaseConnection();
-
+            Mall newMall = new Mall();
             // Retrieve theater names from the database based on the selected mall
             String sql = "SELECT name FROM theater WHERE mall_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            int mallId = getMallId(selectedMall);
+            int mallId = newMall.getMallId(selectedMall);
             statement.setInt(1, mallId);
             ResultSet resultSet = statement.executeQuery();
 
@@ -267,28 +219,28 @@ public class AdminAddEditSeats extends JFrame {
         }
     }
 
-    private void assignSeats(int theaterId, int totalSeats, int numRows, int seatsPerRow) throws SQLException {
-        // Loop through each seat and insert it into the database
-        int currentRow = 1;
-        int currentSeat = 1;
-
-        for (int i = 1; i <= totalSeats; i++) {
-            // Insert the seat into the database with the appropriate theater_id, row, and seat_number
-            String insertQuery = "INSERT INTO seat (theater_id, row, seat_number) VALUES (?, ?, ?)";
-            PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-            insertStatement.setInt(1, theaterId);
-            insertStatement.setInt(2, currentRow);
-            insertStatement.setInt(3, currentSeat);
-            insertStatement.executeUpdate();
-
-            // Increment the seat and row numbers
-            currentSeat++;
-            if (currentSeat > seatsPerRow) {
-                currentRow++;
-                currentSeat = 1;
-            }
-        }
-    }
+//    private void assignSeats(int theaterId, int totalSeats, int numRows, int seatsPerRow) throws SQLException {
+//        // Loop through each seat and insert it into the database
+//        int currentRow = 1;
+//        int currentSeat = 1;
+//
+//        for (int i = 1; i <= totalSeats; i++) {
+//            // Insert the seat into the database with the appropriate theater_id, row, and seat_number
+//            String insertQuery = "INSERT INTO seat (theater_id, row, seat_number) VALUES (?, ?, ?)";
+//            PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+//            insertStatement.setInt(1, theaterId);
+//            insertStatement.setInt(2, currentRow);
+//            insertStatement.setInt(3, currentSeat);
+//            insertStatement.executeUpdate();
+//
+//            // Increment the seat and row numbers
+//            currentSeat++;
+//            if (currentSeat > seatsPerRow) {
+//                currentRow++;
+//                currentSeat = 1;
+//            }
+//        }
+//    }
 
 }
 
