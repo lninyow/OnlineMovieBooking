@@ -22,7 +22,7 @@ public class WelcomePage extends JFrame {
     private JLabel noAccountLabel;
     private JLabel RegisterHereLabel;
 
-    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db","username", "password");
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
 
 
 
@@ -164,7 +164,7 @@ public class WelcomePage extends JFrame {
                             JOptionPane.showMessageDialog(null, "Admin login successful!");
                             // Perform actions for a successful admin login, such as navigating to the admin homepage
                             // Replace the code below with the appropriate actions for your admin page
-                            AdminAddEditMovies adminHomePage = new AdminAddEditMovies();
+                            AdminHomePage adminHomePage = new AdminHomePage();
                             adminHomePage.setVisible(true);
                             setVisible(false);
                         } else {
@@ -203,7 +203,7 @@ public class WelcomePage extends JFrame {
                         JOptionPane.showMessageDialog(null, "Admin login successful!");
                         // Perform actions for a successful admin login, such as navigating to the admin homepage
                         // Replace the code below with the appropriate actions for your admin page
-                        AdminAddEditMovies adminHomePage = new AdminAddEditMovies();
+                        AdminHomePage adminHomePage = new AdminHomePage();
                         adminHomePage.setVisible(true);
                         setVisible(false);
                     } else {

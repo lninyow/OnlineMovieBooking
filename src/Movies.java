@@ -13,6 +13,7 @@ public class Movies {
     private String urlImage;
     private double price;
 
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
 
 
     public Movies(int id, String title, int releaseYear, String director, String genre, double price, String plotSummary, String urlImage) {
@@ -96,7 +97,7 @@ public class Movies {
 
     public void addMovie() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
+            Connection connection = dbMovieManager.getDatabaseConnection();
             String query = "INSERT INTO movie (title, release_year, director, genre, plot_summary, price,  url_image) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
@@ -119,7 +120,7 @@ public class Movies {
 
     public void updateMovie() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db", "username", "password");
+            Connection connection = dbMovieManager.getDatabaseConnection();
             String query = "UPDATE movie SET title = ?, release_year = ?, director = ?, genre = ?, plot_summary = ?, price =?, url_image = ? WHERE movie_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
