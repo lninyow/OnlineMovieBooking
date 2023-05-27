@@ -44,9 +44,12 @@ public class Seat {
 
 
 
-    public void assignSeats(int theaterId, int totalSeats, int numRows, int seatsPerRow) throws SQLException {
+    public void assignSeats(int theaterId, int totalSeats, int seatsPerRow) throws SQLException {
         // Delete existing seats for the theater
         deleteSeatsForTheater(theaterId);
+
+        updateTotalSeats(theaterId, totalSeats);
+
 
         // Loop through each seat and insert it into the database
         int currentRow = 1;
@@ -78,6 +81,16 @@ public class Seat {
              PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
             deleteStatement.setInt(1, theaterId);
             deleteStatement.executeUpdate();
+        }
+    }
+
+    private void updateTotalSeats(int theaterId, int totalSeats) throws SQLException {
+        String updateQuery = "UPDATE theater SET total_seats = ? WHERE theater_id = ?";
+        try (Connection connection = dbMovieManager.getDatabaseConnection();
+             PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setInt(1, totalSeats);
+            updateStatement.setInt(2, theaterId);
+            updateStatement.executeUpdate();
         }
     }
 

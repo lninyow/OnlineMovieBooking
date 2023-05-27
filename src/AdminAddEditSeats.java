@@ -114,7 +114,7 @@ public class AdminAddEditSeats extends JFrame {
                         return;
                     }
                     Seat newSeat = new Seat(0,theaterId,numRows);
-                    newSeat.assignSeats(theaterId, totalSeats, numRows, seatsPerRow);
+                    newSeat.assignSeats(theaterId, totalSeats, seatsPerRow);
 
                     JOptionPane.showMessageDialog(AdminAddEditSeats.this,
                             "Seats assigned successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
