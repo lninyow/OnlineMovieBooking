@@ -27,6 +27,7 @@ public class HomePageTest extends JFrame {
     private JButton btnComingSoon1;
     private JButton btnAboutUs1;
     private JButton btnContactUs;
+    private JButton btnLogOut; // Declare the Logout button
     private JLabel image;
 
     private JPanel cardPanel; // Declare the cardPanel variable at the class level
@@ -36,10 +37,7 @@ public class HomePageTest extends JFrame {
     private JLabel imageComingSoon3;
     private JLabel imageComingSoon4;
     private JLabel imageComingSoon5;
-
     private JPanel mainPanel;
-    private JButton backButton1;
-
     private User loggedInUser;
 
 
@@ -54,16 +52,16 @@ public class HomePageTest extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-
         mainPanel = createMainPanel();
 
         CardLayout cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout); // Assign the created JPanel to the class-level cardPanel variable
         cardPanel.add(mainPanel, "mainPanel");
-//        cardPanel.add(blackWidowPanel, "blackWidowPanel");
+//      cardPanel.add(blackWidowPanel, "blackWidowPanel");
 
         getContentPane().add(cardPanel,BorderLayout.CENTER);
     }
+
 
 
     private JPanel createMainPanel(){
@@ -104,11 +102,31 @@ public class HomePageTest extends JFrame {
         c.gridy = 0;
         panel.add(btnContactUs, c);
 
+        btnLogOut = new JButton("Log Out");
+        c.gridx = 6;
+        c.gridy = 0;
+        panel.add(btnLogOut, c);
+
+        btnLogOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show confirmation dialog
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Warning", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    // Log out and show WelcomePage
+                    loggedInUser = null; // Or whatever you need to do to log out
+                    WelcomePage welcomePage = new WelcomePage();
+                    welcomePage.setVisible(true);
+                    HomePageTest.this.dispose(); // Close HomePageTest
+                }
+            }
+        });
+
 
         //Second row of homepage
         // Second row
         try {
-            BufferedImage image = ImageIO.read(new File("C://Users//Liden//Downloads//longpic.png"));
+            BufferedImage image = ImageIO.read(new File("C:\\Users\\User\\IdeaProjects\\OnlineMovieBooking3\\Images\\longpic.png"));
             JLabel label = new JLabel(new ImageIcon(image));
             c.gridx = 0;
             c.gridy = 2;
@@ -141,7 +159,7 @@ public class HomePageTest extends JFrame {
         JPanel newPane = new JPanel();
         newPane.setLayout(new BorderLayout());
         btnBookTicket = new JButton("Book");
-        ImageIcon icon = new ImageIcon("C:\\Users\\Liden\\Downloads\\bookticket.png");
+        ImageIcon icon = new ImageIcon("C:\\Users\\User\\IdeaProjects\\OnlineMovieBooking3\\Images\\popcorn.png");
         image = new JLabel(icon);
         c.gridx = 0;
         c.gridy = 4;
@@ -247,23 +265,23 @@ public class HomePageTest extends JFrame {
         //Sixth Row of homepage
         //Sixth Row
 
-        ImageIcon iconn1 = new ImageIcon("C://Users//Liden//Desktop//mugentrain.png");
+        ImageIcon iconn1 = new ImageIcon("");
         imageComingSoon1 = new JLabel(iconn1);
 
 
-        ImageIcon iconn2 = new ImageIcon("C://Users//Liden//Desktop//expendables.png");
+        ImageIcon iconn2 = new ImageIcon("");
         imageComingSoon2 = new JLabel(iconn2);
 
 
-        ImageIcon iconn3 = new ImageIcon("C://Users//Liden//Desktop//gotg.png");
+        ImageIcon iconn3 = new ImageIcon("");
         imageComingSoon3 = new JLabel(iconn3);
 
 
-        ImageIcon iconn4 = new ImageIcon("C://Users//Liden//Desktop//jaws.png");
+        ImageIcon iconn4 = new ImageIcon("");
         imageComingSoon4 = new JLabel(iconn4);
 
 
-        ImageIcon iconn5 = new ImageIcon("C://Users//Liden//Desktop//meg2.png");
+        ImageIcon iconn5 = new ImageIcon("");
         imageComingSoon5 = new JLabel(iconn5);
 
 
@@ -384,7 +402,6 @@ public class HomePageTest extends JFrame {
 
         return moviePanel;
     }
-
 
 
     //poster click goes to movie details
