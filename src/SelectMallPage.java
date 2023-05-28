@@ -10,12 +10,17 @@ import java.util.List;
 
 public class SelectMallPage extends JPanel {
     private MovieDatabaseManager dbManager;
+    private BookingPage bookingPage;
+
 
     public SelectMallPage(MovieDatabaseManager dbManager) {
         this.dbManager = dbManager;
         setPreferredSize(new Dimension(1920, 1080));
         initializeUI();
     }
+
+
+
 
     private void initializeUI() {
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -87,4 +92,6 @@ public class SelectMallPage extends JPanel {
             return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         }
     }
+
+
 }

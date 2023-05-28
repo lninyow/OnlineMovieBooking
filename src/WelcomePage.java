@@ -159,20 +159,25 @@ public class WelcomePage extends JFrame {
                     }
 
                     if (isLoggedIn) {
-                        if (username.equals("admin") && password.equals("1234")) {
-                            JOptionPane.showMessageDialog(null, "Admin login successful!");
-                            // Perform actions for a successful admin login, such as navigating to the admin homepage
-                            // Replace the code below with the appropriate actions for your admin page
-                            AdminHomePage adminHomePage = new AdminHomePage();
-                            adminHomePage.setVisible(true);
-                            setVisible(false);
+                        User loggedInUser = fetchUserDetails(username);
+                        if (loggedInUser != null) {
+                            if (username.equals("admin") && password.equals("1234")) {
+                                JOptionPane.showMessageDialog(null, "Admin login successful!");
+                                // Perform actions for a successful admin login, such as navigating to the admin homepage
+                                // Replace the code below with the appropriate actions for your admin page
+                                AdminHomePage adminHomePage = new AdminHomePage(loggedInUser);
+                                adminHomePage.setVisible(true);
+                                setVisible(false);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Login successful!");
+                                // Perform actions for a successful user login, such as navigating to the user homepage
+                                // Replace the code below with the appropriate actions for your user page
+                                HomePageTest newHomepage = new HomePageTest(loggedInUser);
+                                newHomepage.setVisible(true);
+                                setVisible(false);
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Login successful!");
-                            // Perform actions for a successful user login, such as navigating to the user homepage
-                            // Replace the code below with the appropriate actions for your user page
-                            HomePageTest newHomepage = new HomePageTest();
-                            newHomepage.setVisible(true);
-                            setVisible(false);
+                            JOptionPane.showMessageDialog(null, "Failed to fetch user details. Please try again.");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
@@ -198,20 +203,25 @@ public class WelcomePage extends JFrame {
                 }
 
                 if (isLoggedIn) {
-                    if (username.equals("admin") && password.equals("1234")) {
-                        JOptionPane.showMessageDialog(null, "Admin login successful!");
-                        // Perform actions for a successful admin login, such as navigating to the admin homepage
-                        // Replace the code below with the appropriate actions for your admin page
-                        AdminHomePage adminHomePage = new AdminHomePage();
-                        adminHomePage.setVisible(true);
-                        setVisible(false);
+                    User loggedInUser = fetchUserDetails(username);
+                    if (loggedInUser != null) {
+                        if (username.equals("admin") && password.equals("1234")) {
+                            JOptionPane.showMessageDialog(null, "Admin login successful!");
+                            // Perform actions for a successful admin login, such as navigating to the admin homepage
+                            // Replace the code below with the appropriate actions for your admin page
+                            AdminHomePage adminHomePage = new AdminHomePage(loggedInUser);
+                            adminHomePage.setVisible(true);
+                            setVisible(false);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Login successful!");
+                            // Perform actions for a successful user login, such as navigating to the user homepage
+                            // Replace the code below with the appropriate actions for your user page
+                            HomePageTest newHomepage = new HomePageTest(loggedInUser);
+                            newHomepage.setVisible(true);
+                            setVisible(false);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Login successful!");
-                        // Perform actions for a successful user login, such as navigating to the user homepage
-                        // Replace the code below with the appropriate actions for your user page
-                        HomePageTest newHomepage = new HomePageTest();
-                        newHomepage.setVisible(true);
-                        setVisible(false);
+                        JOptionPane.showMessageDialog(null, "Failed to fetch user details. Please try again.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
@@ -275,8 +285,54 @@ public class WelcomePage extends JFrame {
         }
     }
 
+    private User fetchUserDetails(String username) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
+        try {
+            conn = dbMovieManager.getDatabaseConnection();
+            String query = "SELECT * FROM user WHERE username = ?";
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int userId = rs.getInt("user_id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String password = rs.getString("password");
+                String emailAddress = rs.getString("email_address");
+
+                User user = new User(userId, firstName, lastName, username, password, emailAddress);
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the database resources in the reverse order of their creation
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
+
+
+
+
+}
 
 
 

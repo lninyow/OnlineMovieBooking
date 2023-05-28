@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -19,21 +21,14 @@ public class HomePageTest extends JFrame {
     private JLabel lbBookYourTicket;
     private JLabel jLabel1;
     private JLabel jLabel2;
-    private JLabel jLabel3;
     private JLabel jLabel4;
-    private JTextField tfSearch;
     private JButton btnBookTicket;
     private JButton btnPremiers;
     private JButton btnComingSoon1;
-    private JButton btnBookTickets;
     private JButton btnAboutUs1;
     private JButton btnContactUs;
     private JLabel image;
-    private JLabel imageMovie1;
-    private JLabel imageMovie2;
-    private JLabel imageMovie3;
-    private JLabel imageMovie4;
-    private JLabel imageMovie5;
+
     private JPanel cardPanel; // Declare the cardPanel variable at the class level
 
     private JLabel imageComingSoon1;
@@ -41,12 +36,18 @@ public class HomePageTest extends JFrame {
     private JLabel imageComingSoon3;
     private JLabel imageComingSoon4;
     private JLabel imageComingSoon5;
-    private JPanel blackWidowPanel;
+
     private JPanel mainPanel;
     private JButton backButton1;
 
+    private User loggedInUser;
 
-    public HomePageTest() {
+
+
+    public HomePageTest(User loggedInUser) {
+
+        this.loggedInUser = loggedInUser;
+
         setTitle("HomePage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 715);
@@ -147,6 +148,14 @@ public class HomePageTest extends JFrame {
         newPane.add(image, BorderLayout.NORTH);
         newPane.add(btnBookTicket, BorderLayout.SOUTH);
         panel.add(newPane, c);
+
+        btnBookTicket.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BookingPage bookingPage = new BookingPage(loggedInUser);
+                bookingPage.setVisible(true);
+            }
+        });
 
 
 

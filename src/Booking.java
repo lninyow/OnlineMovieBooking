@@ -1,132 +1,119 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Booking {
     private int bookingId;
     private int userId;
     private int showtimeId;
-    private int num_tickets;
-    private Timestamp booking_time;
+    private int seatId;
+    private int numTickets;
+    private String showtimeDate;
+    private String showtimeStartTime;
     private int totalPrice;
-    private boolean paymentStatus;
-    private MovieDatabaseManager movieDbManager;
+    private int paymentStatus;
+    private int foodDrinksId;
 
-
-    public Booking(MovieDatabaseManager movieDbManager) {
-        this.movieDbManager = movieDbManager;
-    }
-
-
-    public Booking(int bookingId, int userId, int showtimeId, int num_tickets, Timestamp booking_time, int totalPrice, boolean paymentStatus) {
+    public Booking(int bookingId, int userId, int showtimeId, int seatId, int numTickets, String showtimeDate,
+                   String showtimeStartTime, int totalPrice, int paymentStatus, int foodDrinksId) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.showtimeId = showtimeId;
-        this.num_tickets = num_tickets;
-        this.booking_time = booking_time;
+        this.seatId = seatId;
+        this.numTickets = numTickets;
+        this.showtimeDate = showtimeDate;
+        this.showtimeStartTime = showtimeStartTime;
         this.totalPrice = totalPrice;
         this.paymentStatus = paymentStatus;
-    }
-
-    public Booking(int bookingId, int userId, int showtimeId, int numTickets, Date bookingTime, int totalPrice, boolean paymentStatus) {
-    }
-
-    public int getBookingId() {
-        return bookingId;
+        this.foodDrinksId = foodDrinksId;
     }
 
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getShowtimeId() {
-        return showtimeId;
     }
 
     public void setShowtimeId(int showtimeId) {
         this.showtimeId = showtimeId;
     }
 
-    public int getNum_tickets() {
-        return num_tickets;
+    public void setSeatId(int seatId) {
+        this.seatId = seatId;
     }
 
-    public void setNum_tickets(int num_tickets) {
-        this.num_tickets = num_tickets;
+    public void setNumTickets(int numTickets) {
+        this.numTickets = numTickets;
     }
 
-    public Timestamp getBooking_time() {
-        return booking_time;
+    public void setShowtimeDate(String showtimeDate) {
+        this.showtimeDate = showtimeDate;
     }
 
-    public void setBooking_time(Timestamp booking_time) {
-        this.booking_time = booking_time;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
+    public void setShowtimeStartTime(String showtimeStartTime) {
+        this.showtimeStartTime = showtimeStartTime;
     }
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(boolean paymentStatus) {
+    public void setPaymentStatus(int paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
-    public Booking createBooking(int user_id, int showtime_id, int num_tickets, int total_price) {
-        // check if required fields are not null or empty
-        if (user_id == 0 || showtime_id == 0 || num_tickets == 0 || total_price == 0) {
-            throw new IllegalArgumentException("Please provide all the required fields.");
-        }
-        // check if enough seats are available
-//        int availableSeats = getAvailableSeats(showtime_id);
-//        if (num_tickets > availableSeats) {
-//            throw new IllegalArgumentException("Sorry, there are not enough available seats for your booking.");
-//        }
-
-        // dont delete code above tyy ^^^^
-
-        // insert a new row into the booking table
-        try {
-            String sql = "INSERT INTO booking (user_id, showtime_id, num_tickets, total_price, payment_status) VALUES (?, ?, ?, ?, 0)";
-            Connection conn = movieDbManager.getDatabaseConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, user_id);
-            pstmt.setInt(2, showtime_id);
-            pstmt.setInt(3, num_tickets);
-            pstmt.setInt(4, total_price);
-            pstmt.executeUpdate();
-
-            // get the generated booking_id and booking_time
-            ResultSet rs = pstmt.getGeneratedKeys();
-            int booking_id = 0;
-            Date booking_time = null;
-            if (rs.next()) {
-                booking_id = rs.getInt(1);
-                booking_time = new Date(rs.getTimestamp(2).getTime());
-            }
-
-            // create a new Booking object with the generated values
-            Booking booking = new Booking(booking_id, user_id, showtime_id, num_tickets, booking_time, total_price, false);
-
-            return booking;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public void setFoodDrinksId(int foodDrinksId) {
+        this.foodDrinksId = foodDrinksId;
     }
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getShowtimeId() {
+        return showtimeId;
+    }
+
+    public int getSeatId() {
+        return seatId;
+    }
+
+    public int getNumTickets() {
+        return numTickets;
+    }
+
+    public String getShowtimeDate() {
+        return showtimeDate;
+    }
+
+    public String getShowtimeStartTime() {
+        return showtimeStartTime;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public int getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public int getFoodDrinksId() {
+        return foodDrinksId;
+    }
+
+    public Booking() {
+    }
+
+
 
 
 

@@ -21,8 +21,10 @@ public class AdminHomePage extends JFrame {
     private javax.swing.JButton Snacks;
     private javax.swing.JButton EditTheater;
 
+    private User loggedInUser;
 
-    public AdminHomePage() {
+
+    public AdminHomePage(User loggedInUser) {
         initComponents();
         setLocationRelativeTo(null);
     }
