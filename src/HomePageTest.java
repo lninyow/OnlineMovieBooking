@@ -57,7 +57,7 @@ public class HomePageTest extends JFrame {
         CardLayout cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout); // Assign the created JPanel to the class-level cardPanel variable
         cardPanel.add(mainPanel, "mainPanel");
-//      cardPanel.add(blackWidowPanel, "blackWidowPanel");
+
 
         getContentPane().add(cardPanel,BorderLayout.CENTER);
     }
@@ -126,7 +126,7 @@ public class HomePageTest extends JFrame {
         //Second row of homepage
         // Second row
         try {
-            BufferedImage image = ImageIO.read(new File("C:\\Users\\User\\IdeaProjects\\OnlineMovieBooking3\\Images\\longpic.png"));
+            BufferedImage image = ImageIO.read(new File("C:/Users/Liden/Downloads/longpic.png"));
             JLabel label = new JLabel(new ImageIcon(image));
             c.gridx = 0;
             c.gridy = 2;
@@ -159,7 +159,7 @@ public class HomePageTest extends JFrame {
         JPanel newPane = new JPanel();
         newPane.setLayout(new BorderLayout());
         btnBookTicket = new JButton("Book");
-        ImageIcon icon = new ImageIcon("C:\\Users\\User\\IdeaProjects\\OnlineMovieBooking3\\Images\\popcorn.png");
+        ImageIcon icon = new ImageIcon("C:/Users/Liden/Downloads/bookticket.png");
         image = new JLabel(icon);
         c.gridx = 0;
         c.gridy = 4;
@@ -265,23 +265,23 @@ public class HomePageTest extends JFrame {
         //Sixth Row of homepage
         //Sixth Row
 
-        ImageIcon iconn1 = new ImageIcon("");
+        ImageIcon iconn1 = new ImageIcon("C:/Users/Liden/Desktop/mugentrain.png");
         imageComingSoon1 = new JLabel(iconn1);
 
 
-        ImageIcon iconn2 = new ImageIcon("");
+        ImageIcon iconn2 = new ImageIcon("C:/Users/Liden/Desktop/jaws.png");
         imageComingSoon2 = new JLabel(iconn2);
 
 
-        ImageIcon iconn3 = new ImageIcon("");
+        ImageIcon iconn3 = new ImageIcon("C:/Users/Liden/Desktop/gotg.png");
         imageComingSoon3 = new JLabel(iconn3);
 
 
-        ImageIcon iconn4 = new ImageIcon("");
+        ImageIcon iconn4 = new ImageIcon("C:/Users/Liden/Desktop/expendables.png");
         imageComingSoon4 = new JLabel(iconn4);
 
 
-        ImageIcon iconn5 = new ImageIcon("");
+        ImageIcon iconn5 = new ImageIcon("C:/Users/Liden/Desktop/meg2.png");
         imageComingSoon5 = new JLabel(iconn5);
 
 

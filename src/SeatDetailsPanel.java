@@ -26,7 +26,7 @@ public class SeatDetailsPanel extends JPanel {
         setSize(300, 300);
 
         JPanel seatButtonsPanel = new JPanel();
-        seatButtonsPanel.setSize(300,300);
+        seatButtonsPanel.setSize(300, 300);
         seatButtonsPanel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.weightx = 1.0;
@@ -39,11 +39,11 @@ public class SeatDetailsPanel extends JPanel {
             int numCols = getMaxSeatNumber(seats);
 
             seatButtonsPanel.setLayout(new GridLayout(numRows, numCols));
-            seatButtonsPanel.setPreferredSize(new Dimension(300,300));
+            seatButtonsPanel.setPreferredSize(new Dimension(300, 300));
             // Create and add seat buttons dynamically
             for (Seat seatObj : seats) {
                 JButton seatButton = new JButton("Seat " + seatObj.getSeatNumber() + " (Row " + seatObj.getRow() + ")");
-                seatButton.setSize(50,50);
+                seatButton.setSize(50, 50);
                 seatButton.addActionListener(e -> {
                     int selectedSeatId = seatObj.getSeatId();
 
@@ -63,13 +63,22 @@ public class SeatDetailsPanel extends JPanel {
                         }
 
                         // Close the database connection
+
                         connection.close();
+
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                         // Handle any errors that occur during the database operation
                     }
 
                 });
+
+
+                if (isSeatPopulated(seatObj)) {
+                    seatButton.setEnabled(false);
+                    seatButton.setBackground(Color.RED);
+                }
+
                 seatButtonsPanel.add(seatButton, constraints);
                 seatButtons.add(seatButton);
             }
@@ -81,6 +90,13 @@ public class SeatDetailsPanel extends JPanel {
         add(seatButtonsPanel, BorderLayout.CENTER);
 
         // Add empty panels to the north, south, east, and west to center the buttons panel
+
+
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        JLabel newLabel = new JLabel("(If seat is red it is taken)");
+        northPanel.add(newLabel);
+        add(northPanel, BorderLayout.NORTH);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -97,7 +113,6 @@ public class SeatDetailsPanel extends JPanel {
 
 
     }
-
 
 
     private int getMaxRowNumber(List<Seat> seats) {
@@ -135,5 +150,36 @@ public class SeatDetailsPanel extends JPanel {
     }
 
 
+    private boolean isSeatPopulated(Seat seat) throws SQLException {
+        boolean isPopulated = false;
+
+        // Establish a database connection
+        Connection connection = dbMovieManager.getDatabaseConnection();
+
+        // Check if the seat is already populated in the booking table for the given theater
+        String query = "SELECT b.seat_id FROM booking b INNER JOIN seat s ON b.seat_id = s.seat_id WHERE s.theater_id = ? AND b.seat_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, seat.getTheaterId());
+            statement.setInt(2, seat.getSeatId());
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if the seat ID exists in the result set
+            if (resultSet.next()) {
+                isPopulated = true;
+            }
+        }
+
+        // Close the database connection
+        connection.close();
+
+        return isPopulated;
+    }
+
+
 
 }
+
+
+
+
+
