@@ -113,7 +113,7 @@ public class AdminAddEditSeats extends JFrame {
                                 "Selected theater does not exist", "Invalid Theater", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    Seat newSeat = new Seat(0,theaterId,numRows);
+                    Seat newSeat = new Seat(0,theaterId,numRows,0);
                     newSeat.assignSeats(theaterId, totalSeats, seatsPerRow);
 
                     JOptionPane.showMessageDialog(AdminAddEditSeats.this,

@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MovieDetailsPanel extends JPanel {
     private JComboBox<String> mallSelector;
@@ -119,15 +117,7 @@ public class MovieDetailsPanel extends JPanel {
         gbc.gridy = 4;
         add(timeSelector, gbc);
 
-        JLabel numOfTix = new JLabel("Input number of tickets: ");
-        gbc.gridx=0;
-        gbc.gridy=5;
-        add(numOfTix,gbc);
 
-        JTextField numOfTickets = new JTextField(10);
-        gbc.gridx=1;
-        gbc.gridy=5;
-        add(numOfTickets,gbc);
 
         selectTimeButton = new JButton("Select Time");
         gbc.gridx = 0;
@@ -169,17 +159,9 @@ public class MovieDetailsPanel extends JPanel {
                 String selectedDate = (String) dateSelector.getSelectedItem();
                 String selectedTime = (String) timeSelector.getSelectedItem();
 
-                Connection connection = null;
-                try {
-                    connection = dbMovieManager.getDatabaseConnection();
 
-                    int showtimeId = getShowtimeId(connection, selectedTheater, selectedMovie, selectedDate, selectedTime);
-                    System.out.println(showtimeId);
 
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-
+                    insertBooking(selectedTheater,selectedMovie,selectedDate,selectedTime);
 
             }
         });
@@ -452,22 +434,51 @@ public class MovieDetailsPanel extends JPanel {
     }
 
 
-    private void insertBooking(int showtimeId, int numTickets) {
+    private void insertBooking(String selectedTheater, String selectedMovie, String selectedDate, String selectedTime) {
         Connection connection = null;
         try {
             // Establish a database connection
             connection = dbMovieManager.getDatabaseConnection();
 
+            // Retrieve the showtime_id based on the selected values
+            int showtimeId = getShowtimeId(connection, selectedTheater, selectedMovie, selectedDate, selectedTime);
+            int price = getPriceFromMovie(connection, selectedMovie);
+            // Calculate the total price by multiplying the price with the number of tickets
+            int totalTicketPrice = price;
+
             // Insert the booking details into the "booking" table
-            String insertQuery = "INSERT INTO booking (user_id, showtime_id, num_tickets) " +
-                    "VALUES (?, ?, ?)";
+            String insertQuery = "INSERT INTO booking (user_id, showtime_id, seat_id, showtime_date, showtime_start_time, total_price, payment_status, food_drinks_id) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
             insertStatement.setInt(1, loggedInUser.getUserId());
             insertStatement.setInt(2, showtimeId);
-            insertStatement.setInt(3, numTickets);
+            insertStatement.setInt(3, 0); // Placeholder value for seat_id
+            insertStatement.setString(4, selectedDate);
+            insertStatement.setString(5, selectedTime);
+            insertStatement.setInt(6, totalTicketPrice);
+            insertStatement.setInt(7, 0); // Placeholder value for payment_status
+            insertStatement.setInt(8, 0); // Placeholder value for food_drinks_id
 
             // Execute the insert statement
             insertStatement.executeUpdate();
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int bookingId = generatedKeys.getInt(1);
+
+
+                int theaterId = getTheaterId(connection,selectedTheater);
+                SeatDetailsPanel seatDetailsPanel = new SeatDetailsPanel(dbMovieManager, loggedInUser, bookingId,theaterId);
+
+                // Remove the current MovieDetailsPanel from the parent container
+                Container parent = getParent();
+                parent.remove(MovieDetailsPanel.this);
+
+                // Add the SeatDetailsPanel to the parent container
+                parent.add(seatDetailsPanel);
+                parent.revalidate();
+                parent.repaint();
+            }
 
             // Perform any additional actions or proceed to the next step
         } catch (SQLException e) {
@@ -484,6 +495,7 @@ public class MovieDetailsPanel extends JPanel {
             }
         }
     }
+
 
     private int getShowtimeId(Connection connection, String selectedTheater, String selectedMovie, String selectedDate, String selectedTime) throws SQLException {
         int showtimeId = -1;
@@ -541,6 +553,22 @@ public class MovieDetailsPanel extends JPanel {
         }
 
         return movieId;
+    }
+
+
+    private int getPriceFromMovie(Connection connection, String selectedMovie) throws SQLException {
+        int price = 0;
+
+        String query = "SELECT price FROM movie WHERE title = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, selectedMovie);
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            price = resultSet.getInt("price");
+        }
+
+        return price;
     }
 
 

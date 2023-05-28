@@ -12,15 +12,6 @@ import java.sql.SQLException;
 public class BookingPage extends JFrame {
     private JPanel cards;
     private CardLayout cardLayout;
-    Connection connection;
-    JComboBox<String> mallSelector;
-    JComboBox<String> theaterSelector;
-    JComboBox<String> movieSelector;
-    JTextField dateField;
-    JTextField startTimeField;
-    JTextField endTimeField;
-    JButton addButton;
-
     private User loggedInUser;
     MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
 
@@ -37,42 +28,30 @@ public class BookingPage extends JFrame {
         add(cards, BorderLayout.CENTER);
 
         JPanel panel4 = createPanel();
-        JPanel panel5 = createPanel();
-        JPanel panel6 = createPanel();
+
         // add more panels as needed...
 
 
-        cards.add(panel4, "Select Date and Time");
-        cards.add(panel5, "Select a Seat");
-        cards.add(panel6, "Select Food or Drinks");
-        // add more cards as needed...
+        cards.add(panel4, "Select Movie Details");
         cardLayout.show(cards, "");
 
-        JPanel buttonPanel = new JPanel();
-        addButton(buttonPanel, "Select Date and Time");
-        addButton(buttonPanel, "Select a Seat");
-        addButton(buttonPanel, "Select Food or Drinks");
-        // add more buttons as needed...
-
-        add(buttonPanel, BorderLayout.NORTH);
     }
 
     private JPanel createPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
+        JPanel labelPanel = new JPanel(); // New panel to hold the label
+        JLabel newLabel = new JLabel("Select Movie Details");
+        newLabel.setFont(new Font("",Font.PLAIN,20));
+        labelPanel.add(newLabel); //
         MovieDetailsPanel movieDetailsPanel = new MovieDetailsPanel(dbMovieManager, loggedInUser);
         panel.add(movieDetailsPanel, BorderLayout.CENTER);
-
+        panel.add(labelPanel,BorderLayout.NORTH);
         return panel;
     }
 
 
 
-    private void addButton(JPanel panel, String text) {
-        JButton button = new JButton(text);
-        button.addActionListener(e -> cardLayout.show(cards, text));
-        panel.add(button);
-    }
+
 
 
 
