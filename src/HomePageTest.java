@@ -126,7 +126,7 @@ public class HomePageTest extends JFrame {
         //Second row of homepage
         // Second row
         try {
-            BufferedImage image = ImageIO.read(new File("C:/Users/Liden/Downloads/longpic.png"));
+            BufferedImage image = ImageIO.read(new File("src/Images/longpic.png"));
             JLabel label = new JLabel(new ImageIcon(image));
             c.gridx = 0;
             c.gridy = 2;
@@ -159,7 +159,7 @@ public class HomePageTest extends JFrame {
         JPanel newPane = new JPanel();
         newPane.setLayout(new BorderLayout());
         btnBookTicket = new JButton("Book");
-        ImageIcon icon = new ImageIcon("C:/Users/Liden/Downloads/bookticket.png");
+        ImageIcon icon = new ImageIcon("src/Images/bookticket.png");
         image = new JLabel(icon);
         c.gridx = 0;
         c.gridy = 4;
@@ -265,23 +265,23 @@ public class HomePageTest extends JFrame {
         //Sixth Row of homepage
         //Sixth Row
 
-        ImageIcon iconn1 = new ImageIcon("C:/Users/Liden/Desktop/mugentrain.png");
+        ImageIcon iconn1 = new ImageIcon("src/Images/jaws.png");
         imageComingSoon1 = new JLabel(iconn1);
 
 
-        ImageIcon iconn2 = new ImageIcon("C:/Users/Liden/Desktop/jaws.png");
+        ImageIcon iconn2 = new ImageIcon("src/Images/gotg.png");
         imageComingSoon2 = new JLabel(iconn2);
 
 
-        ImageIcon iconn3 = new ImageIcon("C:/Users/Liden/Desktop/gotg.png");
+        ImageIcon iconn3 = new ImageIcon("src/Images/meg2.png");
         imageComingSoon3 = new JLabel(iconn3);
 
 
-        ImageIcon iconn4 = new ImageIcon("C:/Users/Liden/Desktop/expendables.png");
+        ImageIcon iconn4 = new ImageIcon("src/Images/mugentrain.png");
         imageComingSoon4 = new JLabel(iconn4);
 
 
-        ImageIcon iconn5 = new ImageIcon("C:/Users/Liden/Desktop/meg2.png");
+        ImageIcon iconn5 = new ImageIcon("src/Images/expendables.png");
         imageComingSoon5 = new JLabel(iconn5);
 
 

@@ -228,7 +228,7 @@ public class WelcomePage extends JFrame {
         });
 
         // Create the image label
-        ImageIcon imageIcon = new ImageIcon("C://Users//Liden//Desktop//blckwidowposter.jpg");
+        ImageIcon imageIcon = new ImageIcon("src/Images/blckwidowposter.jpg");
         Image image = imageIcon.getImage().getScaledInstance(400, 500, Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(image);
 
