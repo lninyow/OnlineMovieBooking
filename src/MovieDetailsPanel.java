@@ -1,5 +1,7 @@
 // MovieDetailsPanel.java
 
+import org.sqlite.SQLiteException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -88,10 +90,10 @@ public class MovieDetailsPanel extends JPanel {
             public void actionPerformed(ActionEvent evt) {
                 String selectedMovie = (String) movieSelector.getSelectedItem();
                 displayMoviePoster(selectedMovie);
+                repaint();
+                revalidate();
             }
         });
-
-
 
 
 
@@ -144,6 +146,10 @@ public class MovieDetailsPanel extends JPanel {
         gbc.gridwidth = 4;
         add(moviePosterLabel, gbc);
 
+
+
+
+
         nextButton = new JButton("Next");
         gbc.gridx = 0; // Set the grid x-position to 0
         gbc.gridy = 8; // Set the grid y-position to 6
@@ -158,8 +164,6 @@ public class MovieDetailsPanel extends JPanel {
                 String selectedMovie = (String) movieSelector.getSelectedItem();
                 String selectedDate = (String) dateSelector.getSelectedItem();
                 String selectedTime = (String) timeSelector.getSelectedItem();
-
-
 
                     insertBooking(selectedTheater,selectedMovie,selectedDate,selectedTime);
 
@@ -337,17 +341,19 @@ public class MovieDetailsPanel extends JPanel {
 
 
     private void displayMoviePoster(String selectedMovie) {
-        // Retrieve the movie poster URL from the database based on the selected movie
+        // Retrieve the movie poster URL and price from the database based on the selected movie
         Connection connection = null;
         try {
             connection = dbMovieManager.getDatabaseConnection();
-            String query = "SELECT url_image FROM movie WHERE title = ?";
+            String query = "SELECT url_image, price FROM movie WHERE title = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, selectedMovie);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 String posterUrl = resultSet.getString("url_image");
+                double price = resultSet.getDouble("price");
+
                 // Load the image from the URL
                 ImageIcon posterIcon = new ImageIcon(new URL(posterUrl));
                 // Scale the image to fit within the JLabel
@@ -355,6 +361,13 @@ public class MovieDetailsPanel extends JPanel {
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
                 // Set the scaled image as the icon for the JLabel
                 moviePosterLabel.setIcon(scaledIcon);
+
+                // Set the price label text
+                String priceText = "Price: " + price;
+                moviePosterLabel.setText(priceText);
+
+                revalidate();
+                repaint();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -370,6 +383,9 @@ public class MovieDetailsPanel extends JPanel {
             }
         }
     }
+
+
+
 
 
     private void populateTimeSelector(String selectedMovie, String selectedTheater, String selectedDate) {
@@ -447,8 +463,8 @@ public class MovieDetailsPanel extends JPanel {
             int totalTicketPrice = price;
 
             // Insert the booking details into the "booking" table
-            String insertQuery = "INSERT INTO booking (user_id, showtime_id, seat_id, showtime_date, showtime_start_time, total_price, payment_status, food_drinks_id) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO booking (user_id, showtime_id, seat_id, showtime_date, showtime_start_time, total_price, payment_status) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
             insertStatement.setInt(1, loggedInUser.getUserId());
             insertStatement.setInt(2, showtimeId);
@@ -457,7 +473,6 @@ public class MovieDetailsPanel extends JPanel {
             insertStatement.setString(5, selectedTime);
             insertStatement.setInt(6, totalTicketPrice);
             insertStatement.setInt(7, 0); // Placeholder value for payment_status
-            insertStatement.setInt(8, 0); // Placeholder value for food_drinks_id
 
             // Execute the insert statement
             insertStatement.executeUpdate();
@@ -481,7 +496,10 @@ public class MovieDetailsPanel extends JPanel {
             }
 
             // Perform any additional actions or proceed to the next step
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
+            // Handle the exception
+            System.err.println("Error: Failed to insert booking. " + e.getMessage());
+        }catch (SQLException e) {
             e.printStackTrace();
             // Handle any errors that occur during the database operation
         } finally {

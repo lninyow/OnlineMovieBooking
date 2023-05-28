@@ -106,6 +106,16 @@ public class SeatDetailsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // Perform action when the Next button is clicked
                 // Example: Navigate to the next step or screen
+                FoodDetailsPanel foodDetailsPanel = new FoodDetailsPanel(dbMovieManager, bookingId);
+
+                // Remove the current MovieDetailsPanel from the parent container
+                Container parent = getParent();
+                parent.remove(SeatDetailsPanel.this);
+
+                // Add the SeatDetailsPanel to the parent container
+                parent.add(foodDetailsPanel);
+                parent.revalidate();
+                parent.repaint();
             }
         });
         southPanel.add(nextButton);
@@ -174,6 +184,8 @@ public class SeatDetailsPanel extends JPanel {
 
         return isPopulated;
     }
+
+
 
 
 
