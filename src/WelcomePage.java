@@ -22,27 +22,22 @@ public class WelcomePage extends JFrame {
     private JLabel noAccountLabel;
     private JLabel RegisterHereLabel;
 
-    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:D:/oop2final/onlineMovieBooking.db","username", "password");
-
-
+    MovieDatabaseManager dbMovieManager = new MovieDatabaseManager("jdbc:sqlite:C:/sqlite3/OOP2/onlineMovieBooking.db", "username", "password");
 
     public WelcomePage() {
         super("Login Page");
-            // Create the login panel
         // Create the login panel
         loginPanel = new JPanel();
         loginPanel.setPreferredSize(new Dimension(600, 900));
-
         loginPanel.setLayout(new GridBagLayout());
         GridBagConstraints welcomeConstraints = new GridBagConstraints();
-
 
         // Create the welcome label
         welcomeLabel = new JLabel("WELCOME");
         welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 40));
         welcomeConstraints.gridx = 0;
         welcomeConstraints.gridy = 0;
-        welcomeConstraints.gridwidth=2;
+        welcomeConstraints.gridwidth = 2;
         welcomeConstraints.insets = new Insets(0, 0, 50, 0);
         loginPanel.add(welcomeLabel, welcomeConstraints);
 
@@ -52,16 +47,15 @@ public class WelcomePage extends JFrame {
         loginLabelText.setFont(new Font("SansSerif", Font.BOLD, 40));
         welcomeConstraints.gridx = 0;
         welcomeConstraints.gridy = 1;
-        welcomeConstraints.gridwidth=1;
+        welcomeConstraints.gridwidth = 1;
         welcomeConstraints.insets = new Insets(0, 0, 0, 0);
         loginLabel.add(loginLabelText);
         loginPanel.add(loginLabel, welcomeConstraints);
 
-
         noAccountPanel = new JPanel();
         noAccountPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        noAccountLabel = new JLabel("Dont have an account?");
-        noAccountLabel.setFont(new Font("SansSerif",Font.PLAIN,12));
+        noAccountLabel = new JLabel("Don't have an account?");
+        noAccountLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
         JButton registerButton = new JButton("Register Here!");
         Border emptyBorder = BorderFactory.createEmptyBorder();
         registerButton.setBorder(emptyBorder);
@@ -69,36 +63,34 @@ public class WelcomePage extends JFrame {
         registerButton.setForeground(Color.BLUE);
         welcomeConstraints.gridx = 0;
         welcomeConstraints.gridy = 2;
-        welcomeConstraints.gridwidth=2;
-        welcomeConstraints.anchor =GridBagConstraints.LINE_END;
+        welcomeConstraints.gridwidth = 2;
+        welcomeConstraints.anchor = GridBagConstraints.LINE_END;
 
         noAccountPanel.add(noAccountLabel);
         noAccountPanel.add(registerButton);
-        loginPanel.add(noAccountPanel,welcomeConstraints);
+        loginPanel.add(noAccountPanel, welcomeConstraints);
 
         welcomeConstraints.anchor = GridBagConstraints.CENTER;
 
-
         // Create the username label and field
         usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(new Font("",Font.PLAIN,15));
-        welcomeConstraints.gridwidth=1;
-        welcomeConstraints.gridx=0;
-        welcomeConstraints.gridy=3;
+        usernameLabel.setFont(new Font("", Font.PLAIN, 15));
+        welcomeConstraints.gridwidth = 1;
+        welcomeConstraints.gridx = 0;
+        welcomeConstraints.gridy = 3;
         welcomeConstraints.insets = new Insets(0, 0, 10, 0);
         loginPanel.add(usernameLabel, welcomeConstraints);
 
         usernameField = new JTextField(20);
         usernameField.setPreferredSize(new Dimension(200, 30));
-        welcomeConstraints.gridx= 1;
-        welcomeConstraints.gridy= 3;
+        welcomeConstraints.gridx = 1;
+        welcomeConstraints.gridy = 3;
         welcomeConstraints.insets = new Insets(10, 0, 10, 0);
         loginPanel.add(usernameField, welcomeConstraints);
 
-
         // Create the password label and field
         passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("",Font.PLAIN,15));
+        passwordLabel.setFont(new Font("", Font.PLAIN, 15));
         welcomeConstraints.gridx = 0;
         welcomeConstraints.gridy = 4;
         welcomeConstraints.insets = new Insets(0, 0, 10, 0);
@@ -114,7 +106,7 @@ public class WelcomePage extends JFrame {
         // Create the login button
         loginButton = new JButton("Log in");
         Color buttonColor = new Color(255, 3, 20);
-        loginButton.setPreferredSize(new Dimension(215,35));
+        loginButton.setPreferredSize(new Dimension(215, 35));
         loginButton.setBackground(buttonColor);
         loginButton.setForeground(Color.WHITE);
         welcomeConstraints.gridx = 1;
@@ -122,8 +114,7 @@ public class WelcomePage extends JFrame {
         welcomeConstraints.anchor = GridBagConstraints.LINE_END;
         loginPanel.add(loginButton, welcomeConstraints);
 
-        //registerButton mouseListener
-        //registerButton mouseListener
+        // RegisterButton mouseListener
         registerButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -137,19 +128,17 @@ public class WelcomePage extends JFrame {
                 super.mouseExited(e);
                 registerButton.setContentAreaFilled(true);
                 registerButton.setBackground(Color.WHITE);
-
             }
         });
 
-
-        //login enter
+        // Login enter
         passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String username = usernameField.getText();
-                    char[] passwordchar = passwordField.getPassword(); //converts the passwordField to a char array
-                    String password = new String(passwordchar); //sets the password into a new string from password char array
+                    char[] passwordchar = passwordField.getPassword();
+                    String password = new String(passwordchar);
 
                     boolean isLoggedIn = false;
                     try {
@@ -186,7 +175,7 @@ public class WelcomePage extends JFrame {
             }
         });
 
-        //login button click
+        // Login button click
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -229,46 +218,36 @@ public class WelcomePage extends JFrame {
             }
         });
 
-        //registerButton action listener
-    registerButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        RegisterPage newRegister = new RegisterPage();
-        newRegister.setVisible(true);
-        setVisible(false);
-    }
-});
+        // RegisterButton action listener
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RegisterPage newRegister = new RegisterPage();
+                newRegister.setVisible(true);
+                setVisible(false);
+            }
+        });
 
+        // Create the image label
+        ImageIcon imageIcon = new ImageIcon("C://Users//Liden//Desktop//blckwidowposter.jpg");
+        Image image = imageIcon.getImage().getScaledInstance(400, 500, Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(image);
 
-
-
-
-
-            // Create the image label
-            ImageIcon imageIcon = new ImageIcon("C://Users//Liden//Desktop//blckwidowposter.jpg");
-            Image image = imageIcon.getImage().getScaledInstance(400, 500, Image.SCALE_SMOOTH);
-            imageIcon = new ImageIcon(image);
-
-            imageLabel = new JLabel(imageIcon);
+        imageLabel = new JLabel(imageIcon);
         // Create an empty border with padding
         Border emptyBorder1 = BorderFactory.createEmptyBorder(0, 0, 0, 50);
         imageLabel.setBorder(emptyBorder1);
 
-            // Add the components to the frame
-            add(loginPanel, BorderLayout.WEST);
-            add(imageLabel, BorderLayout.EAST);
+        // Add the components to the frame
+        add(loginPanel, BorderLayout.WEST);
+        add(imageLabel, BorderLayout.EAST);
 
-
-
-            // Set frame properties
-            setSize(1200, 705);
+        // Set frame properties
+        setSize(1200, 705);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setVisible(true);
-        }
-
-
-
+        setVisible(true);
+    }
 
     public boolean login(String username, String password) throws SQLException {
         Connection conn = dbMovieManager.getDatabaseConnection();
@@ -328,12 +307,4 @@ public class WelcomePage extends JFrame {
 
         return null;
     }
-
-
-
-
 }
-
-
-
-
